@@ -35,6 +35,6 @@ function gpath {
       export PATH=$PATH:/usr/local/go/bin
 }
 
-function refrbash {
-      . /home/mattblack/.bashrc
+function reloadbash {
+      . ~/.bashrc
 }     
