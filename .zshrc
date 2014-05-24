@@ -5,13 +5,13 @@ ZSH_THEME="robbyrussell"
 CASE_SENSITIVE="true"
 export UPDATE_ZSH_DAYS=7
 
+alias sedo='sudo -E'
+
 plugins=(git yum python)
 
 source $ZSH/oh-my-zsh.sh
 
 alias sudo='sudo -E'
-alias glog_extra='git log --all --decorate=full --oneline --graph'
-alias pip3='python3-pip'
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/home/matt/.local/bin:/home/matt/bin"
 export EDITOR='emacs'
