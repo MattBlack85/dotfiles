@@ -5,6 +5,12 @@
 ;;; Yaml mode
 (require 'yaml-mode)
 
+;;;Erlang Mode
+(setq load-path (cons  "/usr/lib64/erlang/lib/tools-2.6.13/emacs" load-path))
+(setq erlang-root-dir "/usr/lib64/erlang")
+(setq exec-path (cons "/usr/lib64/erlang/bin" exec-path))
+(require 'erlang-start)
+
 ;;; Theme
 (require 'color-theme)
 (color-theme-initialize)
