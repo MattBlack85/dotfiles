@@ -5,6 +5,12 @@
 ;;; Yaml mode
 (require 'yaml-mode)
 
+;; SLIME
+(add-to-list 'load-path "~/repos/slime")
+(require 'slime-autoloads)
+(setq inferior-lisp-program "/usr/bin/sbcl")
+(setq slime-contribs '(slime-fancy))
+
 ;;;Erlang Mode
 (setq load-path (cons  "/usr/lib64/erlang/lib/tools-2.6.13/emacs" load-path))
 (setq erlang-root-dir "/usr/lib64/erlang")
