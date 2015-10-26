@@ -1,6 +1,22 @@
-; EMACS conf
+;;; EMACS conf
 
-(add-to-list 'load-path "~/.emacs.d/")
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/elpa") t)
+
+;;; Melpa repo
+(require 'package)
+(package-initialize)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/")t)
+
+;; Magic auto pep8 on saving
+(require 'py-autopep8)
+(setq py-autopep8-options '("--max-line-length=100"))
+(add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
+
+;;; Theme
+(require 'color-theme)
+(color-theme-initialize)
+(color-theme-deep-blue)
 
 ;;; Yaml mode
 (require 'yaml-mode)
@@ -10,23 +26,6 @@
 (require 'slime-autoloads)
 (setq inferior-lisp-program "/usr/bin/sbcl")
 (setq slime-contribs '(slime-fancy))
-
-;;;Erlang Mode
-(setq load-path (cons  "/usr/lib64/erlang/lib/tools-2.6.13/emacs" load-path))
-(setq erlang-root-dir "/usr/lib64/erlang")
-(setq exec-path (cons "/usr/lib64/erlang/bin" exec-path))
-(require 'erlang-start)
-
-;;; Theme
-(require 'color-theme)
-(color-theme-initialize)
-(color-theme-deep-blue)
-
-;;; Melpa repo
-(require 'package)
-(package-initialize)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/")t)
 
 ;;; Line numbers
 (global-linum-mode t)
@@ -39,6 +38,7 @@
 ;; Whitespace killah
 (setq-default indicate-empty-lines t)
 (setq-default indicate-unused-lines t)
+(setq whitespace-style '(face tabs empty trailing lines-tail))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
