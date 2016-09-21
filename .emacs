@@ -1,4 +1,29 @@
-;;; EMACS conf
+;;; .emacs --- my Emacs Init File
+
+;;
+;;    ___ _ __ ___   __ _  ___ ___
+;;   / _ \ '_ ` _ \ / _` |/ __/ __|
+;;  |  __/ | | | | | (_| | (__\__ \
+;; (_)___|_| |_| |_|\__,_|\___|___/
+;;
+
+;;; Commentary:
+
+;;  Citations
+;;
+;;     "Show me your ~/.emacs and I will tell you who you are."
+;;                                                         [Bogdan Maryniuk]
+;;
+;;     "Emacs is like a laser guided missile.  It only has to be slightly
+;;      mis-configured to ruin your whole day."
+;;                                                         [Sean McGrath]
+;;
+;;     "While any text editor can save your files, only Emacs can save your
+;;      soul."
+;;                                                         [Per Abrahamsen]
+;;
+
+;;; Code:
 
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/elpa") t)
 
@@ -6,7 +31,10 @@
 (require 'package)
 (package-initialize)
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/")t)
+	     '("melpa" . "http://melpa.milkbox.net/packages/")t)
+
+;;; Flake8
+(global-flycheck-mode)
 
 ;; Magic auto pep8 on saving
 (require 'py-autopep8)
@@ -21,11 +49,11 @@
 ;;; Yaml mode
 (require 'yaml-mode)
 
-;; SLIME
-(add-to-list 'load-path "~/repos/slime")
-(require 'slime-autoloads)
-(setq inferior-lisp-program "/usr/bin/sbcl")
-(setq slime-contribs '(slime-fancy))
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)       
+
+;;; JS indent
+(setq js-indent-level 2)
 
 ;;; Line numbers
 (global-linum-mode t)
@@ -38,18 +66,13 @@
 ;; Whitespace killah
 (setq-default indicate-empty-lines t)
 (setq-default indicate-unused-lines t)
-(setq whitespace-style '(face tabs empty trailing lines-tail))
 
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(inhibit-startup-screen t))
- '(backup-directory-alist (quote (("." . "~/.emacs.d/backup"))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;; custom-set-variables was added by Custom.
+;; If you edit it by hand, you could mess it up, so be careful.
+;; Your init file should contain only one such instance.
+;; If there is more than one, they won't work right.
+'(inhibit-startup-screen t))
+'(backup-directory-alist (quote (("." . "~/.emacs.d/backup"))))
+
+;;; .emacs ends here
