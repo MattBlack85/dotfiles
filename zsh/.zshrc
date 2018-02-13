@@ -13,7 +13,7 @@ alias activate_venv='. venv/bin/activate'
 alias sudo='sudo -E'
 alias glog_extra='git log --all --decorate=full --oneline --graph'
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/home/matt/.local/bin:/home/matt/bin"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/home/$USER/.local/bin:/home/$USER/bin"
 export EDITOR='emacs'
 
 function open_github_page()
