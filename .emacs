@@ -60,6 +60,12 @@
 (setq-default truncate-lines t)
 (setq truncate-partial-width-windows nil) ;; for vertical windows
 
+;;; ipdb macro, drop ipdb within your code
+(fset 'ipdb
+   [?i ?m ?p ?o ?r ?t ?  ?i ?p ?d ?b ?\; return ?i ?p ?d ?b ?. ?s ?e ?t ?_ ?t ?r ?a ?c ?e ?\( ?\) return])
+
+(global-set-key (kbd "C-c i") 'ipdb)
+
 ;;; Show trailing whitespace.
 (setq-default show-trailing-whitespace t)
 
