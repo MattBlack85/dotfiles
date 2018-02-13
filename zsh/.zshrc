@@ -5,7 +5,7 @@ CASE_SENSITIVE="true"
 
 export UPDATE_ZSH_DAYS=7
 
-plugins=(git yum python)
+plugins=(git dnf python)
 
 source $ZSH/oh-my-zsh.sh
 
