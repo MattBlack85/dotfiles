@@ -1,0 +1,39 @@
+!! Default background color
+URxvt*background: #232729
+URxvt*foreground: #E4E4E2
+
+! Fonts
+URxvt.allow_bold: false
+URxvt.font:     xft:Monospace:size=12:antialias=true
+URxvt.boldFont: xft:Monospace:bold:size=12:antialias=true
+
+!! Terminal colors
+!! black (dark/bright)
+URxvt*color0:  #2E3436
+URxvt*color8:  #555753
+!! red (dark/bright)
+URxvt*color1:  #CC0000
+URxvt*color9:  #EF2929
+!! green (dark/bright)
+URxvt*color2:  #4E9A06
+URxvt*color10: #8AE234
+!! yellow (dark/bright)
+URxvt*color3:  #C4A000
+URxvt*color11: #FCE94F
+!! blue (dark/bright)
+URxvt*color4:  DodgerBlue
+URxvt*color12: DodgerBlue
+!! magenta (dark/bright)
+URxvt*color5:  #75507B
+URxvt*color13: #AD7FA8
+!! cyan (dark/bright)
+URxvt*color6:  #06989A
+URxvt*color14: #34E2E2
+!! white (dark/bright)
+URxvt*color7:  #D3D7CF
+URxvt*color15: #EEEEEC
+
+! Scrollbar
+URxvt.scrollBar: true
+URxvt*scrollBar_right: true
+URxvt*scrollstyle: xterm
