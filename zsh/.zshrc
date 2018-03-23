@@ -16,6 +16,7 @@ alias sudo='sudo -E'
 alias glog_extra='git log --all --decorate=full --oneline --graph'
 alias docker-prune='docker system prune'
 alias nuke-stopped-docker-container='docker rm `docker ps --no-trunc -aq`'
+alias lock-screen='i3lock --color=#000000'
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/home/$USER/.local/bin:/home/$USER/bin"
 export EDITOR='emacs'
