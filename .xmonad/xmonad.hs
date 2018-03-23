@@ -1,12 +1,14 @@
 import XMonad
 import XMonad.Actions.SpawnOn
+import XMonad.Hooks.DynamicLog
 
 
-myWorkspaces = ["web", "editor", "terms", "socials"]
+myWorkspaces = ["web", "editor", "terms", "socials"] ++ ["5..9"]
 
-main = do
-  xmonad $ defaultConfig
-    { terminal           = "urxvt"
+main = xmonad =<< xmobar myConfig
+
+myConfig = def
+  { terminal           = "urxvt"
     , modMask            = mod4Mask
     , borderWidth        = 3
     , workspaces         = myWorkspaces
