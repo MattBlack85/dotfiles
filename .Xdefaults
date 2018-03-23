@@ -4,8 +4,8 @@ URxvt*foreground: #E4E4E2
 
 ! Fonts
 URxvt.allow_bold: false
-URxvt.font:     xft:Monospace:size=12:antialias=true
-URxvt.boldFont: xft:Monospace:bold:size=12:antialias=true
+URxvt.font:     xft:Inconsolata for\ Powerline:size=11:antialias=true
+URxvt.boldFont: xft:Inconsolata\ Bold\ for\ Powerline:size=11:antialias=true
 
 !! Terminal colors
 !! black (dark/bright)
