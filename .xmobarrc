@@ -1,0 +1,28 @@
+-- -*- haskell -*-
+Config { font = "-*-Fixed-Bold-R-Normal-*-20-*-*-*-*-*-*-*"
+       , bgColor = "#1d1d1d"
+       , fgColor = "grey"
+       , position = Top
+       , border = BottomB
+       , borderColor = "#646464"
+       , lowerOnStart = True
+       , allDesktops = True
+       , commands = [ Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
+                    , Run Memory ["-t","Mem: <usedratio>%"] 10
+                    , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+                    , Run CoreTemp ["-t","<core0>C",
+                                    "-L","40","-H","60",
+                                    "-l","lightblue",
+                                    "-n","gray90","-h","red"] 50
+                    , Run DynNetwork [] 10
+                    , Run Wireless "wlp2s0" [] 10
+                    , Run BatteryP ["BAT0"] ["-t", "<left>% | <timeleft>",
+                                             "-L", "10", "-H", "80", "-p", "3",
+                                             "--", "-O", "<fc=green>On</fc> - ", "-i", "",
+                                             "-L", "-15", "-H", "-5",
+                                             "-l", "red", "-m", "blue", "-h", "green"] 600
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "%cpu% | %memory% | %coretemp% }{ %wlp2s0wi% | %dynnetwork% | %battery% | <fc=#66ff99>%date%</fc>"
+}
