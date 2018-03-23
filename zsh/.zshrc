@@ -1,9 +1,11 @@
 export ZSH=$HOME/.oh-my-zsh
 
-ZSH_THEME="robbyrussell"
+ZSH_THEME="agnoster"
 CASE_SENSITIVE="true"
 
 export UPDATE_ZSH_DAYS=7
+export DEFAULT_USER="mattblack"
+prompt_context(){}
 
 plugins=(git dnf python)
 
@@ -30,3 +32,4 @@ function open_github_page()
     url=${git_url%.git}
     xdg-open $url
 }
+export GPG_TTY=$(tty)
