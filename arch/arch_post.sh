@@ -29,4 +29,5 @@ mkdir /home/matt/.xmonad
 ln -s /home/data/repos/dotfiles/.xmonad/xmonad.hs /home/matt/.xmonad/
 chown matt:matt /home/matt -R
 localectl set-locale en_US.utf8
+chsh -s /bin/zsh matt
 exit
