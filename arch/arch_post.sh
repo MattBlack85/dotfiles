@@ -13,8 +13,8 @@ pacman -Sy sudo wpa_supplicant efibootmgr grub xmobar python3 python-pip emacs f
 passwd
 useradd -m matt
 passwd matt
-
 # mount /data under /home
+mkdir /home/matt/data
 mount /dev/sdb1 /home/matt/data
 if [ ! -d "/home/matt/data/repos" ]; then
     mkdir /home/matt/data/repos
@@ -57,7 +57,8 @@ ln -s /home/matt/data/repos/dotfiles/.xmonad/xmonad.hs /home/matt/.xmonad/
 chown matt:matt /home/matt -R
 
 # VERY IMPORTANT for powerline fonts
-localectl set-locale en_US.utf8
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
+echo "KEYMAP=it" > /etc/vconsole.conf
 
 # Set the best shell for my user
 chsh -s /bin/zsh matt
