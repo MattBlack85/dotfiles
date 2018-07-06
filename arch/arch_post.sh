@@ -51,7 +51,7 @@ ln -s /home/matt/data/repos/dotfiles/.xmobarrc /home/matt/.xmobarrc
 ln -s /home/matt/data/repos/dotfiles/.xinitrc /home/matt/.xinitrc
 ln -s /home/matt/data/repos/dotfiles/.Xdefaults /home/matt/.Xdefaults
 mkdir /home/matt/.xmonad
-ln -s /home/data/repos/dotfiles/.xmonad/xmonad.hs /home/matt/.xmonad/
+ln -s /home/matt/data/repos/dotfiles/.xmonad/xmonad.hs /home/matt/.xmonad/
 
 # folders, links and files have been manipulated all by root, change owner
 chown matt:matt /home/matt -R
