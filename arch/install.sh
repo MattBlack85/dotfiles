@@ -20,6 +20,7 @@ mount /dev/sda1 /mnt/boot
 
 # mount /data under /home
 mount /dev/sdb1 /mnt/home/data
+mkdir /mnt/home/data/repos
 
 # create and mount swap
 mkswap /dev/sda3
@@ -29,6 +30,6 @@ pacstrap /mnt base
 genfstab -U /mnt >> /mnt/etc/fstab
 wget https://raw.githubusercontent.com/MattBlack85/dotfiles/master/arch/arch_post.sh
 cp arch_post.sh /mnt/chroot.sh
-chmod +x /mnt/arch_post.sh
+chmod +x /mnt/chroot.sh
 arch-chroot /mnt ./chroot.sh
 rm /mnt/chroot.sh
