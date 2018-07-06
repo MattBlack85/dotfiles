@@ -32,8 +32,26 @@
 (package-initialize)
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/")t)
+(package-refresh-contents)
+
+;; list of package that have to be installed
+(defvar local-packages '(yaml-mode go-mode flycheck-pyflakes apib-mode slime jedi py-autopep8 magit color-theme fill-column-indicator))
+
+;; function that from a list of packages return the uninstalled packages
+(defun uninstalled-packages (packages)
+  (delq nil
+	(mapcar (lambda (p) (if (package-installed-p p nil) nil p)) packages)))
+
+;; function that install uninstalled packages.
+(let ((need-to-install (uninstalled-packages local-packages)))
+  (when need-to-install
+    (progn
+      (package-refresh-contents)
+      (dolist (p need-to-install)
+(package-install p)))))
 
 ;;; Flake8
+(require 'flycheck)
 (global-flycheck-mode)
 
 ;; Magic auto pep8 on saving
@@ -50,7 +68,7 @@
 (require 'yaml-mode)
 
 (add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)       
+(setq jedi:complete-on-dot t)
 
 ;;; JS indent
 (setq js-indent-level 2)
@@ -74,11 +92,20 @@
 (setq-default indicate-unused-lines t)
 
 (custom-set-variables
-;; custom-set-variables was added by Custom.
-;; If you edit it by hand, you could mess it up, so be careful.
-;; Your init file should contain only one such instance.
-;; If there is more than one, they won't work right.
-'(inhibit-startup-screen t))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(inhibit-startup-screen t)
+ '(package-selected-packages
+   (quote
+    (yaml-mode go-mode flycheck-pyflakes apib-mode slime jedi py-autopep8 magit color-theme fill-column-indicator))))
 '(backup-directory-alist (quote (("." . "~/.emacs.d/backup"))))
 
 ;;; .emacs ends here
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
