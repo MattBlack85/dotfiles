@@ -4,7 +4,7 @@ ZSH_THEME="agnoster"
 CASE_SENSITIVE="true"
 
 export UPDATE_ZSH_DAYS=7
-export DEFAULT_USER="mattblack"
+export DEFAULT_USER="matt"
 prompt_context(){}
 
 plugins=(git dnf python)
