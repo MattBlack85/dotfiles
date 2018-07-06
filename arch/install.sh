@@ -18,10 +18,6 @@ mount /dev/sda4 /mnt/var
 # mount /boot
 mount /dev/sda1 /mnt/boot
 
-# mount /data under /home
-mount /dev/sdb1 /mnt/home/data
-mkdir /mnt/home/data/repos
-
 # create and mount swap
 mkswap /dev/sda3
 swapon /dev/sda3
@@ -32,4 +28,4 @@ wget https://raw.githubusercontent.com/MattBlack85/dotfiles/master/arch/arch_pos
 cp arch_post.sh /mnt/chroot.sh
 chmod +x /mnt/chroot.sh
 arch-chroot /mnt ./chroot.sh
-rm /mnt/chroot.sh
+genfstab -U /mnt >> /mnt/etc/fstab
