@@ -7,7 +7,7 @@ echo "archmatt" >> /etc/hostname
 cat <<EOF > /etc/hosts
 127.0.0.1	localhost
 ::1		localhost
-127.0.1.1	achmatt.localdomain	archmatt
+127.0.1.1	archmatt.localdomain	archmatt
 EOF
 pacman -Sy sudo wpa_supplicant efibootmgr grub xmobar python3 python-pip emacs firefox net-tools sbcl git xorg-server zsh pulseaudio gzip unzip openssh wget rxvt-unicode xorg-xinit xmonad xmonad-contrib docker alsa-utils
 passwd
