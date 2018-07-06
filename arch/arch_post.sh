@@ -27,4 +27,7 @@ ln -s /home/data/repos/dotfiles/.xinitrc /home/matt/.xinitrc
 ln -s /home/data/repos/dotfiles/.Xdefaults /home/matt/.Xdefaults
 mkdir /home/matt/.xmonad
 ln -s /home/data/repos/dotfiles/.xmonad/xmonad.hs /home/matt/.xmonad/
+localectl set-locale en_US.utf8
+localectl set-x11-keymap it
+chown matt:matt /home/matt -R
 exit
