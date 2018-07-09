@@ -34,6 +34,9 @@ pip install jedi epc autopep8
 git config --global user.email "promat85@gmail.com"
 git config --global user.name "Mattia Procopio"
 
+# Add my user to docker group
+usermod -aG docker matt
+
 # Check if we have repos already available befoe checking them out
 if [ ! -d "/home/matt/data/repos/dotfiles" ]; then
     git clone https://github.com/MattBlack85/dotfiles.git /home/matt/data/repos/dotfiles
