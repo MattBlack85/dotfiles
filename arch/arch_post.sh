@@ -30,6 +30,10 @@ systemctl enable dhcpcd docker ntpd
 # Install stuff for python
 pip install jedi epc autopep8
 
+# Configure git
+git config --global user.email "promat85@gmail.com"
+git config --global user.name "Mattia Procopio"
+
 # Check if we have repos already available befoe checking them out
 if [ ! -d "/home/matt/data/repos/dotfiles" ]; then
     git clone https://github.com/MattBlack85/dotfiles.git /home/matt/data/repos/dotfiles
