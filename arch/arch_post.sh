@@ -28,7 +28,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 systemctl enable dhcpcd docker ntpd
 
 # Install stuff for python
-pip install jedi epc
+pip install jedi epc autopep8
 
 # Check if we have repos already available befoe checking them out
 if [ ! -d "/home/matt/data/repos/dotfiles" ]; then
