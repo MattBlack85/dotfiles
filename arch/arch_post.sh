@@ -9,7 +9,7 @@ cat <<EOF > /etc/hosts
 ::1		localhost
 127.0.1.1	archmatt.localdomain	archmatt
 EOF
-pacman -Sy sudo wpa_supplicant ntp efibootmgr grub xmobar python3 python-pip emacs firefox net-tools htop sbcl git chromium xorg-server zsh pulseaudio gzip unzip openssh wget rxvt-unicode xorg-xinit xmonad xmonad-contrib docker alsa-utils xrandr libxss gtk2 weechat make vlc linux-headers
+pacman -Sy sudo wpa_supplicant ntp efibootmgr grub xmobar python3 python-pip emacs firefox net-tools htop sbcl git chromium networkmanager xorg-server zsh pulseaudio gzip unzip openssh wget rxvt-unicode xorg-xinit xmonad xmonad-contrib docker alsa-utils xrandr libxss gtk2 weechat make vlc linux-headers
 passwd
 useradd -m matt
 passwd matt
