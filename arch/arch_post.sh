@@ -28,7 +28,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 systemctl enable dhcpcd docker ntpd NetworkManager
 
 # Install stuff for python
-pip install jedi epc autopep8
+pip install jedi epc autopep8 flake8
 
 # Configure git
 git config --global user.email "promat85@gmail.com"
