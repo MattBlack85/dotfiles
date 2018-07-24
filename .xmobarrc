@@ -14,6 +14,7 @@ Config { font = "-*-Fixed-Bold-R-Normal-*-20-*-*-*-*-*-*-*"
                                     "-L","40","-H","60",
                                     "-l","lightblue",
                                     "-n","gray90","-h","red"] 50
+                    , Run StdinReader
                     , Run DynNetwork [] 10
                     , Run Wireless "wlp2s0" [] 10
                     , Run BatteryP ["BAT0"] ["-t", "<left>% | <timeleft>",
@@ -24,5 +25,5 @@ Config { font = "-*-Fixed-Bold-R-Normal-*-20-*-*-*-*-*-*-*"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%cpu% | %memory% | %coretemp% }{ %wlp2s0wi% | %dynnetwork% | %battery% | <fc=#66ff99>%date%</fc>"
+       , template = "%cpu% | %memory% | %coretemp% } %StdinReader% { %wlp2s0wi% | %dynnetwork% | %battery% | <fc=#66ff99>%date%</fc>"
 }
