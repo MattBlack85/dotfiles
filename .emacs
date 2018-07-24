@@ -91,6 +91,10 @@
 (setq-default indicate-empty-lines t)
 (setq-default indicate-unused-lines t)
 
+;; SLIME
+(setq inferior-lisp-program "/usr/bin/sbcl")
+(setq slime-contribs '(slime-fancy))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -99,7 +103,7 @@
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
-    (yaml-mode go-mode flycheck-pyflakes apib-mode slime jedi py-autopep8 magit color-theme fill-column-indicator))))
+    (terraform-mode haskell-mode yaml-mode go-mode flycheck-pyflakes apib-mode slime jedi py-autopep8 magit color-theme fill-column-indicator))))
 '(backup-directory-alist (quote (("." . "~/.emacs.d/backup"))))
 
 ;;; .emacs ends here
