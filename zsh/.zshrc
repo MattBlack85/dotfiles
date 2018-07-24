@@ -33,4 +33,47 @@ function open_github_page()
     url=${git_url%.git}
     xdg-open $url
 }
+
+function monitor_volume_down() {
+    if [ -n "$1" ]
+    then
+	pactl set-sink-volume 0 -"$1"%
+    fi
+}
+
+function monitor_volume_up() {
+    if [ -n "$1" ]
+    then
+	pactl set-sink-volume 0 +"$1"%
+    fi
+}
+
+function monitor_set_volume_to() {
+    if [ -n "$1" ]
+    then
+	pactl set-sink-volume 0 "$1"%
+    fi
+}
+
+function headphones_volume_down() {
+    if [ -n "$1" ]
+    then
+	pactl set-sink-volume 1 -"$1"%
+    fi
+}
+
+function headphones_volume_up() {
+    if [ -n "$1" ]
+    then
+	pactl set-sink-volume 1 +"$1"%
+    fi
+}
+
+function headphones_set_volume_to() {
+    if [ -n "$1" ]
+    then
+	pactl set-sink-volume 1 "$1"%
+    fi
+}
+
 export GPG_TTY=$(tty)
