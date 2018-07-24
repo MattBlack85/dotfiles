@@ -3,7 +3,7 @@ import XMonad.Actions.SpawnOn
 import XMonad.Hooks.DynamicLog
 
 
-myWorkspaces = ["rambox", "web", "editor", "terms"] ++ ["5..9"]
+myWorkspaces = ["rambox", "web", "editor", "terms", "alsa", "chromium"] ++ ["7..9"]
 
 main = xmonad =<< xmobar myConfig
 
@@ -19,7 +19,7 @@ myConfig = def
         spawnOn "editor" "emacs"
         spawnOn "web" "firefox"
         spawnOn "terms" "urxvt -e weechat"
-        spawnOn "terms" "urxvt -e alsamixer"
         spawnOn "terms" "urxvt"
         spawnOn "rambox" "rambox"
+	spawnOn "alsa" "urxvt -e alsamixer"
     }
