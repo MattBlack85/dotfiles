@@ -1,2 +1,2 @@
-pulseaudio --start
+pulseaudio --start -D
 exec xmonad
