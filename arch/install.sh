@@ -23,7 +23,6 @@ mkswap /dev/sda3
 swapon /dev/sda3
 
 pacstrap /mnt base
-genfstab -U /mnt >> /mnt/etc/fstab
 wget https://raw.githubusercontent.com/MattBlack85/dotfiles/master/arch/arch_post.sh
 cp arch_post.sh /mnt/chroot.sh
 chmod +x /mnt/chroot.sh
