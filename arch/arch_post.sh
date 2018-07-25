@@ -9,7 +9,7 @@ cat <<EOF > /etc/hosts
 ::1		localhost
 127.0.1.1	archmatt.localdomain	archmatt
 EOF
-pacman -Sy sudo wpa_supplicant ntp efibootmgr grub xmobar python3 python-pip emacs firefox net-tools htop sbcl git chromium networkmanager xorg-server zsh pulseaudio gzip unzip openssh wget rxvt-unicode xorg-xinit xmonad xmonad-contrib docker alsa-utils xrandr libxss gtk2 weechat make vlc linux-headers
+pacman -Sy sudo wpa_supplicant ntp efibootmgr grub xmobar python3 python-pip emacs firefox net-tools htop sbcl git chromium networkmanager xorg-server zsh pulseaudio gzip unzip openssh wget rxvt-unicode xorg-xinit xmonad xmonad-contrib docker alsa-utils xrandr libxss gtk2 weechat make vlc linux-headers acpid
 passwd
 useradd -m matt
 passwd matt
@@ -25,7 +25,7 @@ grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Enable services at startup
-systemctl enable dhcpcd docker ntpd NetworkManager
+systemctl enable dhcpcd docker ntpd NetworkManager acpid
 
 # Install stuff for python
 pip install jedi epc autopep8 flake8
