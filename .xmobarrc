@@ -1,29 +1,35 @@
 -- -*- haskell -*-
-Config { font = "-*-Fixed-Bold-R-Normal-*-20-*-*-*-*-*-*-*"
-       , bgColor = "#1d1d1d"
-       , fgColor = "grey"
-       , position = Top
-       , border = BottomB
-       , borderColor = "#646464"
-       , lowerOnStart = True
-       , allDesktops = True
-       , commands = [ Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
-                    , Run Memory ["-t","Mem: <usedratio>%"] 10
-                    , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
-                    , Run CoreTemp ["-t","<core0>C",
-                                    "-L","40","-H","60",
-                                    "-l","lightblue",
-                                    "-n","gray90","-h","red"] 50
+Config { font            = "xft:Ubuntu:weight=bold:pixelsize=11:antialias=true:hinting=true"
+       , additionalFonts = [ "xft:Mononoki:pixelsize=11:antialias=true:hinting=true"
+                           , "xft:Font Awesome 5 Free Solid:pixelsize=12"
+                           , "xft:Font Awesome 5 Brands:pixelsize=12"
+                           ]
+       , bgColor      = "#282c34"
+       , fgColor      = "grey"
+       , position     = TopSize L 100 24
+       , border       = BottomB
+       , borderColor  = "#646464"
+       , persistent   = True
+       , iconRoot     = "data/repos/aur/dotfiles/.xmonad/xpm/"
+       , lowerOnStart = False
+       , allDesktops  = True
+       , commands = [Run Memory ["-t", "<fn=2>\xf233</fn>  mem: <used>M (<usedratio>%)"] 20
+                    , Run Date "<fn=2>\xf017</fn>  %a %b %d %Y - (%H:%M) " "date" 50
+                    , Run DiskU [("/", "<fn=2>\xf0c7</fn>  hdd: <free> free")] [] 60
+                       -- Echos a "penguin" icon in front of the kernel output.
+                    , Run Com "echo" ["<fn=3>\xf17c</fn>"] "penguin" 3600
+                    , Run Com ".local/bin/kernel" [] "kernel" 36000
                     , Run StdinReader
                     , Run DynNetwork [] 10
-                    , Run Wireless "wlp2s0" [] 10
-                    , Run BatteryP ["BAT0"] ["-t", "<left>% | <timeleft>",
-                                             "-L", "10", "-H", "80", "-p", "3",
-                                             "--", "-O", "<fc=green>On</fc> - ", "-i", "",
-                                             "-L", "-15", "-H", "-5",
-                                             "-l", "red", "-m", "blue", "-h", "green"] 600
+                    , Run MultiCpu [ "--template" , "Cpu:  <total0>% | <total1>% | <total2>% | <total3>% | <total4>% | <total5>% | <total6>% | <total7>%"
+                                   , "--Low"      , "50"         -- units: %
+                                   , "--High"     , "85"         -- units: %
+                                   , "--low"      , "darkgreen"
+                                   , "--normal"   , "darkorange"
+                                   , "--high"     , "darkred"
+                                   ] 10
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%cpu% | %memory% | %coretemp% } %StdinReader% { %wlp2s0wi% | %dynnetwork% | %battery% | <fc=#66ff99>%date%</fc>"
+       , template = "<icon=haskell_20.xpm/>  <fc=#666666>|</fc> <fc=#ffa500>%multicpu%</fc> | <fc=#1e90ff>%memory%</fc> | <box type=Bottom width=2 mb=2 color=#51afef><fc=#2cefcf>%penguin%  <action=`urxvt -e htop`>%kernel%</action> </fc></box>} %StdinReader% { <box type=Bottom width=2 mb=2 color=#a9a1e1><fc=#a9a1e1><action=`urxvt -e htop`>%disku%</action></fc></box> | <fc=#ffff3b>%dynnetwork%</fc> | <fc=#66ff99>%date%</fc>"
 }
