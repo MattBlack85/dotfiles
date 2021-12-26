@@ -15,7 +15,7 @@ sed -i -e 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g' /etc/locale.gen
 locale-gen
 
 # set the hostname to HOSTNAME
-echo HOSTNAME >> /etc/hostname
+echo $SCRIPT_HOSTNAME >> /etc/hostname
 cat <<EOF > /etc/hosts
 127.0.0.1	localhost
 ::1		localhost
@@ -23,7 +23,7 @@ cat <<EOF > /etc/hosts
 EOF
 
 # Install some base packages
-pacman -Sy sudo wpa_supplicant ntp efibootmgr grub xmobar python3 python-pip emacs firefox net-tools htop sbcl git chromium networkmanager xorg-server zsh pulseaudio gzip unzip openssh wget rxvt-unicode xorg-xinit xmonad xmonad-contrib docker alsa-utils libxss gtk2 weechat make vlc linux-headers acpid dnsutils check-updates ttf-font-awesome ttf-joypixels ttf-ubuntu
+pacman -Sy sudo wpa_supplicant ntp efibootmgr grub xmobar python3 python-pip emacs firefox net-tools htop sbcl git chromium networkmanager xorg-server zsh pulseaudio gzip unzip openssh wget rxvt-unicode xorg-xinit xmonad xmonad-contrib docker alsa-utils libxss gtk2 weechat make vlc linux-headers acpid dnsutils check-updates ttf-font-awesome ttf-joypixels ttf-ubuntu-font-family dhcpcd dmenu direnv pyenv
 
 # Prompt for a new password for ROOT
 passwd
@@ -45,11 +45,6 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 # Enable services at startup
 systemctl enable dhcpcd ntpd NetworkManager acpid
-
-# Enable pulseaudio for the user
-su $SCRIPT_USER
-systemctl --user enable pulseaudio
-su root
 
 # Install stuff for python - be aware that these are installed globally
 pip install jedi epc autopep8 flake8
@@ -96,4 +91,8 @@ echo "KEYMAP=it" > /etc/vconsole.conf
 
 # Set the best shell for my user
 chsh -s /bin/zsh $SCRIPT_USER
+
+# Enable pulseaudio for the user
+su $SCRIPT_USER
+systemctl --user enable pulseaudio
 exit
