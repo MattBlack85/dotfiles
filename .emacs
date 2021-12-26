@@ -31,24 +31,8 @@
 (require 'package)
 (package-initialize)
 (add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/")t)
-(package-refresh-contents)
-
-;; list of package that have to be installed
-(defvar local-packages '(yaml-mode go-mode flycheck-pyflakes apib-mode slime jedi py-autopep8 magit color-theme fill-column-indicator))
-
-;; function that from a list of packages return the uninstalled packages
-(defun uninstalled-packages (packages)
-  (delq nil
-	(mapcar (lambda (p) (if (package-installed-p p nil) nil p)) packages)))
-
-;; function that install uninstalled packages.
-(let ((need-to-install (uninstalled-packages local-packages)))
-  (when need-to-install
-    (progn
-      (package-refresh-contents)
-      (dolist (p need-to-install)
-(package-install p)))))
+	     '("melpa" . "http://melpa.org/packages/")t)
+;(package-refresh-contents)
 
 ;;; Flake8
 (require 'flycheck)
@@ -60,13 +44,17 @@
 (add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
 
 ;;; Theme
-(require 'color-theme)
-(color-theme-initialize)
-(color-theme-deep-blue)
+;(require 'color-theme)
+;(color-theme-initialize)
+;(color-theme-deep-blue)
+
+(load-theme 'deep-blue t t)
+(enable-theme 'deep-blue)
 
 ;;; Yaml mode
 (require 'yaml-mode)
 
+(add-hook 'csharp-mode-hook 'omnisharp-mode)
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
 
@@ -102,8 +90,7 @@
  ;; If there is more than one, they won't work right.
  '(inhibit-startup-screen t)
  '(package-selected-packages
-   (quote
-    (terraform-mode haskell-mode yaml-mode go-mode flycheck-pyflakes apib-mode slime jedi py-autopep8 magit color-theme fill-column-indicator))))
+   '(rust-auto-use rust-mode omnisharp csharp-mode lsp-mode pacmacs haskell-emacs arduino-mode flutter csv-mode dockerfile-mode ## markdown-mode py-autopep8 terraform-mode haskell-mode yaml-mode go-mode flycheck-pyflakes apib-mode slime jedi magit fill-column-indicator)))
 '(backup-directory-alist (quote (("." . "~/.emacs.d/backup"))))
 
 ;;; .emacs ends here
