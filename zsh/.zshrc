@@ -7,10 +7,9 @@ export UPDATE_ZSH_DAYS=7
 export DEFAULT_USER="matt"
 prompt_context(){}
 
-plugins=(git python archlinux django emacs)
+plugins=(git python archlinux emacs pipenv)
 
 source $ZSH/oh-my-zsh.sh
-source /usr/share/nvm/init-nvm.sh
 
 alias activate_venv='pipenv shell'
 alias sudo='sudo -E'
@@ -22,9 +21,10 @@ alias commit_all_shit='git add . && git commit --amend --no-edit'
 alias clean-from-temp='find . \( -name "*~" -o -name "*#" \) -exec rm -rf {} \;'
 alias clean-pyc='find . -name "*.pyc*" -exec rm -rf {} \;'
 alias git-sync-local-remote-branches='git remote prune origin'
+alias generate-ssh-key='ssh-keygen -t ed25519 -C "promat85@gmail.com"'
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/home/$USER/.local/bin:/home/$USER/bin:/home/$USER/.gem/ruby/2.5.0/bin:/home/$USER/Android/Sdk/platform-tools"
-export EDITOR='emacs'
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/home/$USER/.local/bin:/home/$USER/bin:/home/$USER/.gem/ruby/2.5.0/bin:$HOME/.cargo/bin"
+export EDITOR='emacsclient -c -a "emacs"'
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 
@@ -127,7 +127,7 @@ function find_and_replace_in_files() {
     find . -name "*.$1" -exec sed -i "s/"$2"/"$3"/g" '{}' \;
 }
 
-function seecert () {
+function see-sslcert () {
   nslookup $1
   (openssl s_client -showcerts -servername $1 -connect $1:443 <<< "Q" | openssl x509 -text | grep "DNS After")
 }
