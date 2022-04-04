@@ -23,7 +23,7 @@ cat <<EOF > /etc/hosts
 EOF
 
 # Install some base packages
-pacman -Sy sudo wpa_supplicant ntp efibootmgr grub xmobar python3 python-pip emacs firefox net-tools htop sbcl git chromium networkmanager xorg-server zsh pulseaudio gzip unzip openssh wget rxvt-unicode xorg-xinit xmonad xmonad-contrib docker alsa-utils libxss gtk2 weechat make vlc linux-headers acpid dnsutils check-updates ttf-font-awesome ttf-joypixels ttf-ubuntu-font-family dhcpcd dmenu direnv pyenv
+pacman -Sy sudo wpa_supplicant ntp efibootmgr grub xmobar python3 python-pip emacs firefox net-tools htop sbcl git chromium networkmanager xorg-server zsh pulseaudio gzip unzip openssh wget rxvt-unicode xorg-xinit xmonad xmonad-contrib docker alsa-utils libxss gtk2 weechat make vlc linux-headers acpid dnsutils ttf-font-awesome ttf-joypixels ttf-ubuntu-font-family dhcpcd dmenu direnv pyenv
 
 # Prompt for a new password for ROOT
 passwd
