@@ -27,7 +27,7 @@ import qualified Data.Map as M
     -- Hooks
 import XMonad.Hooks.DynamicLog (dynamicLogWithPP, wrap, xmobarPP, xmobarColor, shorten, PP(..))
 import XMonad.Hooks.EwmhDesktops  -- for some fullscreen events, also for xcomposite in obs.
-import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, manageDocks, ToggleStruts(..))
+import XMonad.Hooks.ManageDocks (avoidStruts, docks, manageDocks, ToggleStruts(..))
 import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat, doCenterFloat)
 import XMonad.Hooks.ServerMode
 import XMonad.Hooks.SetWMName
@@ -204,7 +204,7 @@ myLayoutHook = avoidStruts $ mouseResize $ windowArrange $ T.toggleLayouts float
   $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) myDefaultLayout
   where
     myDefaultLayout =     withBorder myBorderWidth tall
-                          ||| magnify
+                          ||| Main.magnify
                           ||| noBorders monocle
                           ||| floats
                           ||| noBorders tabs
@@ -248,13 +248,12 @@ main = do
   xmproc0 <- spawnPipe "xmobar -x 0 $HOME/.xmobarrc"
   xmproc1 <- spawnPipe "xmobar -x 1 $HOME/.xmobarrc"
 
-  xmonad $ ewmh def
+  xmonad $ docks $ ewmh def
     { terminal           = myTerminal
     , modMask            = myModMask
     , workspaces         = myWorkspaces
     , manageHook         = manageDocks <+> myManageHook
     , layoutHook         = showWName' myShowWNameTheme $ myLayoutHook
-    , handleEventHook    = docksEventHook
     , borderWidth        = myBorderWidth
     , focusedBorderColor = myFocusColor
     , normalBorderColor  = myColor
