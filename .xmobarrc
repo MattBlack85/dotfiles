@@ -1,8 +1,8 @@
 -- -*- haskell -*-
-Config { font            = "xft:Ubuntu:weight=bold:pixelsize=11:antialias=true:hinting=true"
-       , additionalFonts = [ "xft:Mononoki:pixelsize=11:antialias=true:hinting=true"
-                           , "xft:Font Awesome 5 Free Solid:pixelsize=12"
-                           , "xft:Font Awesome 5 Brands:pixelsize=12"
+Config { font            = "xft:Ubuntu:weight=bold:pixelsize=12:antialias=true:hinting=true"
+       , additionalFonts = [ "xft:Mononoki:pixelsize=12:antialias=true:hinting=true"
+                           , "xft:Font Awesome 6 Free Solid:pixelsize=12"
+                           , "xft:Font Awesome 6 Brands:pixelsize=12"
                            ]
        , bgColor      = "#282c34"
        , fgColor      = "grey"
@@ -10,7 +10,7 @@ Config { font            = "xft:Ubuntu:weight=bold:pixelsize=11:antialias=true:h
        , border       = BottomB
        , borderColor  = "#646464"
        , persistent   = True
-       , iconRoot     = "data/repos/aur/dotfiles/.xmonad/xpm/"
+       , iconRoot     = "/home/matt/data/repos/aur/dotfiles/.xmonad/xpm/"
        , lowerOnStart = False
        , allDesktops  = True
        , commands = [Run Memory ["-t", "<fn=2>\xf233</fn>  mem: <used>M (<usedratio>%)"] 20
