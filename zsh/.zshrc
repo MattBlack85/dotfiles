@@ -22,8 +22,8 @@ alias clean-from-temp='find . \( -name "*~" -o -name "*#" \) -exec rm -rf {} \;'
 alias clean-pyc='find . -name "*.pyc*" -exec rm -rf {} \;'
 alias git-sync-local-remote-branches='git remote prune origin'
 alias generate-ssh-key='ssh-keygen -t ed25519 -C "promat85@gmail.com"'
-
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/home/$USER/.local/bin:/home/$USER/bin:/home/$USER/.gem/ruby/2.5.0/bin:$HOME/data/.cargo/bin"
+alias aws-vault='aws-vault --backend=pass'
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/home/$USER/.local/bin:/home/$USER/bin:$HOME/data/.cargo/bin:/opt/tfenv/bin"
 export EDITOR='emacsclient -c -a "emacs"'
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
@@ -109,9 +109,6 @@ export GPG_TTY=$(tty)
 eval "$(pyenv init -)"
 
 autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/bin/vault vault
-
-. $HOME/.asdf/asdf.sh
 
 # add Pulumi to the PATH
 export PATH=$PATH:$HOME/.pulumi/bin
