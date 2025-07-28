@@ -182,7 +182,7 @@ myFocusColor = "#46d9ff"
 
 myStartupHook :: X ()
 myStartupHook = do
-  spawnOnce "/usr/bin/emacs --daemon &"
+  spawnOnce "/usr/bin/emacs --daemon"
   spawnOnce "firefox"
   spawnOnce "feh --bg-fill ~/data/Downloads/bubble-hst-3412x3240.png"
   spawnOnce "pavucontrol"
@@ -233,6 +233,7 @@ myManageHook = composeAll
      , className =? "Emacs"           --> doShift " emacs "
      , className =? "Slack"           --> doShift " chat "
      , className =? "Pavucontrol"     --> doShift " sound "
+     , className =? "URxvt"           --> doShift " terms "
      , (className =? "Firefox" <&&> resource =? "Dialog") --> doFloat  -- Float Firefox Dialog
      ]
 
