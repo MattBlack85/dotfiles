@@ -1,0 +1,34 @@
+;; ----------- Workspaces -------------
+(defpoll WORKSPACES :interval "2s" "hyprctl workspaces -j | jq -r '.[].id' | tr '\n' ' '")
+
+;; ----------- System Stats -----------
+(defpoll CPU :interval "5s" "~/.config/eww/scripts/cpu.sh")
+(defpoll MEM :interval "5s" "~/.config/eww/scripts/used_memory.sh")
+(defpoll NET :interval "5s" "~/.config/eww/scripts/net.sh")
+
+;; ----------- Volume / Brightness ----
+(defpoll VOLUME :interval "1s" "~/.config/eww/scripts/get_volume.sh")
+(defpoll BRIGHTNESS :interval "5s" "~/.config/eww/scripts/brightness.sh")
+
+;; ----------- Clock & Weather --------
+(defpoll TIME :interval "1s" "date '+%H:%M'")
+(defpoll DATE :interval "60s" "date '+%a %d %b'")
+(defpoll WEATHER :interval "600s" "~/.config/eww/scripts/weather.sh")
+
+;; ----------- Bar Window -------------
+
+(defwindow bar
+  :monitor 0
+  :geometry (geometry :x "0" :y "0" :width "100%" :height "30px")
+  :exclusive true
+  :layer "top"
+  (box :class "bar"
+    (box :class "left"
+      (label :text "  {WORKSPACES}"))
+    (box :class "center"
+      (label :text {" " + CPU + " %   " + MEM + "%   " + NET}))
+    (box :class "right"
+      (label :text {VOLUME == "MUTED" ? " Muted" : "   " + VOLUME + "%"} )
+      (label :text " {BRIGHTNESS}%")
+      (label :text " {DATE}   {TIME}")
+      (label :text " {WEATHER}"))))
