@@ -1,8 +1,16 @@
+# This must go first with p10k
+export GPG_TTY=$(tty)
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 export ZSH=$HOME/.oh-my-zsh
 
-ZSH_THEME="af-magic"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 CASE_SENSITIVE="true"
-
 export UPDATE_ZSH_DAYS=7
 export DEFAULT_USER="matt"
 prompt_context(){}
@@ -21,14 +29,18 @@ alias commit_all_shit='git add . && git commit --amend --no-edit'
 alias clean-from-temp='find . \( -name "*~" -o -name "*#" \) -exec rm -rf {} \;'
 alias clean-pyc='find . -name "*.pyc*" -exec rm -rf {} \;'
 alias git-sync-local-remote-branches='git remote prune origin'
-alias generate-ssh-key='ssh-keygen -t ed25519 -C "promat85@gmail.com"'
+alias generate-ed25519-ssh-key='ssh-keygen -t ed25519 -C "$USER@$HOST"'
 alias aws-vault='aws-vault --backend=pass'
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/home/$USER/.local/bin:/home/$USER/bin:$HOME/data/.cargo/bin:/opt/tfenv/bin"
+alias turn-off='rsync-backup && poweroff'
+
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/home/$USER/.local/bin:/home/$USER/bin:$HOME/data/.cargo/bin:/opt/tfenv/bin:/opt/PixInsight/bin:/home/$USER/development/flutter/bin:$HOME/.pub-cache/bin:${ASDF_DATA_DIR:-$HOME/.asdf}/shims:${PYENV_ROOT}/bin:$PATH"
 export EDITOR='emacsclient -c -a "emacs"'
 export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
 export RUSTUP_HOME="$HOME/data/.rustup"
 export CARGO_HOME="$HOME/data/.cargo"
+export CHROME_EXECUTABLE="/usr/bin/chromium"
+export TERM=xterm-256color
+
 
 function open_github_page()
 {
@@ -54,48 +66,6 @@ function gsc_kstars() {
     export PATH=$GSCBIN:$PATH
 }
 
-function monitor_volume_down() {
-    if [ -n "$1" ]
-    then
-	pactl set-sink-volume 0 -"$1"%
-    fi
-}
-
-function monitor_volume_up() {
-    if [ -n "$1" ]
-    then
-	pactl set-sink-volume 0 +"$1"%
-    fi
-}
-
-function monitor_set_volume_to() {
-    if [ -n "$1" ]
-    then
-	pactl set-sink-volume 0 "$1"%
-    fi
-}
-
-function headphones_volume_down() {
-    if [ -n "$1" ]
-    then
-	pactl set-sink-volume 1 -"$1"%
-    fi
-}
-
-function headphones_volume_up() {
-    if [ -n "$1" ]
-    then
-	pactl set-sink-volume 1 +"$1"%
-    fi
-}
-
-function headphones_set_volume_to() {
-    if [ -n "$1" ]
-    then
-	pactl set-sink-volume 1 "$1"%
-    fi
-}
-
 function check_cpu_frequency() {
     watch -n 1 "cat /proc/cpuinfo | grep \"^[c]pu MHz\""
 }
@@ -104,7 +74,7 @@ function git-nuke-local-nonexisting-branches() {
     git branch -vv | grep ": gone" | awk '{print $1}' | xargs git branch -d
 }
 
-export GPG_TTY=$(tty)
+export GPGKEY=77A8CE8E2EE44564A3CF76C52EB8727E0A0A67A7
 
 eval "$(pyenv init -)"
 
@@ -127,3 +97,29 @@ function see-sslcert () {
   nslookup $1
   (openssl s_client -showcerts -servername $1 -connect $1:443 <<< "Q" | openssl x509 -text | grep "DNS After")
 }
+
+function rsync-backup () {
+    echo "Mounting /dev/nvme0n1p1 on /home/matt/data/rsync-backup-main-disk/boot"
+    sudo mount /dev/nvme0n1p1 /home/matt/data/rsync-backup-main-disk/boot
+    echo "Mounted /dev/nvme0n1p1"
+    echo "Mounting /dev/nvme0n1p2 on /home/matt/data/rsync-backup-main-disk/root"
+    sudo mount /dev/nvme0n1p2 /home/matt/data/rsync-backup-main-disk/root
+    echo "Mounted /dev/nvme0n1p2"
+    echo "Rsyncing /boot"
+    sudo rsync -aAXHv --progress  --ignore-existing --delete /boot /home/matt/data/rsync-backup-main-disk/boot
+    echo "/boot rysnced"
+    echo "Rsyncing now the whole disk"
+    sudo rsync -aAXHv --progress --exclude=/dev/\* --exclude=/proc/\* --exclude=/sys/\* --exclude=/var/tmp/\* --exclude=/var/spool/\* --exclude=/tmp/\* --exclude=/run/\* --exclude=/mnt/\* --exclude=/media/\* --exclude=/lost+found --exclude=/boot/\* --exclude=/home/matt/data/\* --exclude=/home/matt/games/\* --exclude=/home/matt/data/rsync-backup-main-disk/\* --ignore-existing --delete / /home/matt/data/rsync-backup-main-disk/root
+    echo "Whole disk rsynced"
+    echo "Umounting /home/matt/data/rsync-backup-main-disk/boot"
+    sudo umount /home/matt/data/rsync-backup-main-disk/boot
+    echo "Umounted"
+    echo "Umounting /home/matt/data/rsync-backup-main-disk/root"
+    sudo umount /home/matt/data/rsync-backup-main-disk/root
+    echo "Umounted"
+}
+
+eval "$(atuin init zsh)"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
