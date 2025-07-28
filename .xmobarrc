@@ -1,8 +1,7 @@
 -- -*- haskell -*-
-Config { font            = "xft:Ubuntu:weight=bold:pixelsize=12:antialias=true:hinting=true"
-       , additionalFonts = [ "xft:Mononoki:pixelsize=12:antialias=true:hinting=true"
-                           , "xft:Font Awesome 6 Free Solid:pixelsize=12"
-                           , "xft:Font Awesome 6 Brands:pixelsize=12"
+Config { font            = "Ubuntu 13"
+       , additionalFonts = [ "Font Awesome 6 Free Solid 12"
+                           , "Font Awesome 6 Brands 12"
                            ]
        , bgColor      = "#282c34"
        , fgColor      = "grey"
@@ -10,12 +9,13 @@ Config { font            = "xft:Ubuntu:weight=bold:pixelsize=12:antialias=true:h
        , border       = BottomB
        , borderColor  = "#646464"
        , persistent   = True
-       , iconRoot     = "/home/matt/data/repos/aur/dotfiles/.xmonad/xpm/"
+       , iconRoot     = "/home/matt/data/xpm"
        , lowerOnStart = False
        , allDesktops  = True
        , commands = [Run Memory ["-t", "<fn=2>\xf233</fn>  mem: <used>M (<usedratio>%)"] 20
                     , Run Date "<fn=2>\xf017</fn>  %a %b %d %Y - (%H:%M) " "date" 50
-                    , Run DiskU [("/", "<fn=2>\xf0c7</fn>  hdd: <free> free")] [] 60
+                    , Run DiskU [("/", "root hdd: <used>/<free>")] [] 60
+                    , Run Kbd [("it", "IT"), ("us", "US")]
                        -- Echos a "penguin" icon in front of the kernel output.
                     , Run Com "echo" ["<fn=3>\xf17c</fn>"] "penguin" 3600
                     , Run Com ".local/bin/kernel" [] "kernel" 36000
@@ -24,7 +24,7 @@ Config { font            = "xft:Ubuntu:weight=bold:pixelsize=12:antialias=true:h
                     , Run Com ".local/bin/pacupdate" [] "pacupdate" 3600
                     , Run StdinReader
                     , Run DynNetwork [] 10
-                    , Run MultiCpu [ "--template" , "Cpu:  <total0>% | <total1>% | <total2>% | <total3>% | <total4>% | <total5>% | <total6>% | <total7>%"
+                    , Run MultiCpu [ "--template" , "<fn=2>\xf108</fn> cpu:  <total0>% | <total1>% | <total2>% | <total3>% | <total4>% | <total5>% | <total6>% | <total7>%"
                                    , "--Low"      , "50"         -- units: %
                                    , "--High"     , "85"         -- units: %
                                    , "--low"      , "darkgreen"
@@ -34,5 +34,14 @@ Config { font            = "xft:Ubuntu:weight=bold:pixelsize=12:antialias=true:h
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "<icon=haskell_20.xpm/>  <fc=#666666>|</fc> <fc=#ffa500>%multicpu%</fc> | <fc=#1e90ff>%memory%</fc> | <box type=Bottom width=2 mb=2 color=#51afef><fc=#2cefcf>%penguin%  <action=`urxvt -e htop`>%kernel%</action> </fc></box>} %StdinReader% { <box type=Bottom width=2 mb=2 color=#c678dd><fc=#c678dd>%bell%  <action=`urxvt -e sudo pacman -Syu`>%pacupdate%</action></fc></box> | <box type=Bottom width=2 mb=2 color=#a9a1e1><fc=#a9a1e1><action=`urxvt -e htop`>%disku%</action></fc></box> | <fc=#ffff3b>%dynnetwork%</fc> | <fc=#66ff99>%date%</fc>"
+       , template = "<icon=arch.xpm/>  <fc=#666666>| \
+                    \</fc> <fc=#ffa500>%multicpu%</fc> | \
+                    \<fc=#1e90ff>%memory%</fc> | \
+                    \<box type=Bottom width=2 mb=2 color=#51afef><fc=#2cefcf>%penguin% kernel: <action=`urxvt -e htop`>%kernel%</action> </fc></box>\
+                    \} %StdinReader% { \
+                    \<box type=Bottom width=2 mb=2 color=#c678dd><fc=#c678dd>%bell%  <action=`urxvt -e sudo pacman -Syu`>%pacupdate%</action></fc></box> | \
+                    \<fc=#D38623>keyboard: %kbd%</fc> | \
+                    \<box type=Bottom width=2 mb=2 color=#a9a1e1><fc=#a9a1e1><action=`urxvt -e htop`>%disku%</action></fc></box> | \
+                    \<fc=#ffff3b>%dynnetwork%</fc> | \
+                    \<fc=#66ff99>%date%</fc>"
 }
