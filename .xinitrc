@@ -1,2 +1,2 @@
-xrandr --output DVI-D-0 --off --output HDMI-0 --mode 2560x1440 --pos 1920x0 --rotate normal --output DP-0 --off --output DP-1 --off --output DP-2 --mode 1920x1080 --pos 0x180 --rotate normal --output DP-3 --off --output DP-4 --off --output DP-5 --off
+xrandr --output DisplayPort-0 --off --output DisplayPort-1 --mode 2560x1440 --pos 1937x0 --rotate normal --output DisplayPort-2 --mode 1920x1080 --pos 0x123 --rotate normal --output HDMI-A-0 --off
 exec xmonad
