@@ -13,8 +13,8 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("awww-daemon")
     hl.exec_cmd("sleep 1 && awww img " .. wallpaper)
     -- Wallpapers: DP-2 (big) and DP-3 each get their own image.
-    hl.exec_cmd("sleep 2 && awww img -o DP-2 --resize crop ~/.local/share/cyber-rain/main.png")
-    hl.exec_cmd("sleep 2 && awww img -o DP-3 --resize crop ~/.local/share/cyber-rain/second.jpg")
+    hl.exec_cmd("sleep 2 && awww img -o DP-2 --resize crop ~/.local/share/wallpapers/main.png")
+    hl.exec_cmd("sleep 2 && awww img -o DP-3 --resize crop ~/.local/share/wallpapers/second.jpg")
     -- eww bar on both monitors (xmobar ran on both too)
     hl.exec_cmd("eww open-many bar:bar0 bar:bar1 --arg bar0:monitor=0 --arg bar1:monitor=1")
 
