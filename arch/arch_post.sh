@@ -23,13 +23,12 @@ cat <<EOF > /etc/hosts
 EOF
 
 # Install some base packages
-pacman -Sy sudo wpa_supplicant ntp efibootmgr grub xmobar python3 \
+pacman -Sy sudo wpa_supplicant ntp efibootmgr grub python \
            python-pip emacs firefox net-tools htop sbcl git chromium \
-           networkmanager xorg-server zsh pulseaudio gzip unzip openssh \
-           wget rxvt-unicode xorg-xinit xmonad xmonad-contrib docker \
-           alsa-utils libxss gtk2 weechat make vlc linux-headers acpid \
-           dnsutils ttf-font-awesome ttf-joypixels ttf-ubuntu-font-family ttf-droid \
-           dhcpcd dmenu direnv pyenv
+           networkmanager zsh pipewire pipewire-pulse gzip unzip openssh \
+           wget docker alsa-utils libxss make vlc linux-headers acpid \
+           dnsutils dhcpcd direnv pyenv kitty hyprland nerdfonts \
+           hyprpolkitagent xdg-desktop-portal-hyprland wl-clipboard cliphist --noconfirm
 
 # Prompt for a new password for ROOT
 passwd
@@ -63,7 +62,7 @@ git config --global user.name "Mattia Procopio"
 usermod -aG docker $SCRIPT_USER
 
 # Add $SCRIPT_USER to tty group
-usermod -aG tty $SCRIPT_USER
+usermod -aG uucp $SCRIPT_USER
 
 # Check if we have repos already available before checking them out
 if [ ! -d "/home/"$SCRIPT_USER"/data/repos/dotfiles" ]; then
@@ -91,11 +90,13 @@ fi
 # Link dotfiles to locations where they are used for real so they will be synced with git repos
 ln -s /home/$SCRIPT_USER/data/repos/dotfiles/.emacs /home/$SCRIPT_USER/.emacs
 ln -s /home/$SCRIPT_USER/data/repos/dotfiles/zsh/.zshrc /home/$SCRIPT_USER/.zshrc
-ln -s /home/$SCRIPT_USER/data/repos/dotfiles/.xmobarrc /home/$SCRIPT_USER/.xmobarrc
-ln -s /home/$SCRIPT_USER/data/repos/dotfiles/.xinitrc /home/$SCRIPT_USER/.xinitrc
-ln -s /home/$SCRIPT_USER/data/repos/dotfiles/.Xdefaults /home/$SCRIPT_USER/.Xdefaults
-mkdir /home/$SCRIPT_USER/.xmonad
-ln -s /home/$SCRIPT_USER/data/repos/dotfiles/.xmonad/xmonad.hs /home/$SCRIPT_USER/.xmonad/
+# Wayland / Hyprland
+mkdir -p /home/$SCRIPT_USER/.config/eww
+ln -s /home/$SCRIPT_USER/data/repos/dotfiles/hypr /home/$SCRIPT_USER/.config/hypr
+ln -s /home/$SCRIPT_USER/data/repos/dotfiles/fuzzel /home/$SCRIPT_USER/.config/fuzzel
+ln -s /home/$SCRIPT_USER/data/repos/dotfiles/eww/eww.yuck /home/$SCRIPT_USER/.config/eww/
+ln -s /home/$SCRIPT_USER/data/repos/dotfiles/eww/eww.scss /home/$SCRIPT_USER/.config/eww/
+ln -s /home/$SCRIPT_USER/data/repos/dotfiles/eww/scripts /home/$SCRIPT_USER/.config/eww/scripts
 
 # folders, links and files have been manipulated all by root, change owner
 chown $SCRIPT_USER:$SCRIPT_USER /home/$SCRIPT_USER -R
@@ -107,7 +108,4 @@ echo "KEYMAP=it" > /etc/vconsole.conf
 # Set the best shell for my user
 chsh -s /bin/zsh $SCRIPT_USER
 
-# Enable pulseaudio for the user
-su $SCRIPT_USER
-systemctl --user enable pulseaudio
-exit
+exit 0

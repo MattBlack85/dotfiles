@@ -3,87 +3,113 @@
 Personal dotfiles for an Arch Linux desktop (hostname `arcturus`, user `matt`).
 Remote: `github.com/MattBlack85/dotfiles`, branch `main`.
 
-## Goal in progress: migrate XMonad (X11) → Hyprland (Wayland)
+## Status: Hyprland (Wayland) is the only desktop; XMonad (X11) has been removed
 
-XMonad is still the working daily driver. The Hyprland setup was started in July 2025
-and has stalled. Do not remove or break the XMonad/X11 files until Hyprland is fully usable.
+The migration from XMonad is done. Hyprland 0.57 runs from this repo's Lua config (started with
+`start-hyprland` from a zsh login on a tty; there is no display manager). On 2026-11-02 the XMonad/X11
+packages were uninstalled (xmonad, xmonad-contrib, xmobar, rxvt-unicode, dmenu, feh, xorg-server, xterm,
+the Xorg GPU drivers, rofi, xdotool, wallust, waybar and the Haskell libraries only they needed) and the files
+were deleted from the repo: `.xmonad/xmonad.hs`, `.xmobarrc`, `.xinitrc`, `.Xdefaults`, `trayer.sh`. They are in
+git history (before the "Remove XMonad" commit) if ever needed; comments in `hypr/*.lua` that say
+"ported from xmonad.hs" refer to them. Kept on purpose: `xorg-xwayland` (Hyprland, Steam), `xorg-xrandr`
+(Steam), `xorg-xinit` (tigervnc), `xclip`/`xsel`, `playerctl` (audio keys; marked explicit).
 
-### Current state (as of 2026-11-02)
+## Hyprland side
 
-**XMonad side (working, in use)**
-- `.xmonad/xmonad.hs`: DT-inspired config. Mod = Super, 8 named workspaces
-  (` image `, ` web `, ` emacs `, ` terms `, ` video `, ` chat `, ` mix `, ` sound `),
-  many layouts, manageHook routes apps to workspaces, startup spawns emacs daemon,
-  firefox, feh wallpaper, pavucontrol, slack, urxvt.
-- `.xmobarrc` + `trayer.sh`: status bar (xmobar on 2 monitors, trayer padding).
-- `.xinitrc`: xrandr for 2 monitors (DP-1 2560x1440 @ x=1937, DP-2 1920x1080 @ x=0, y=123), then `exec xmonad`.
-- `.Xdefaults`: urxvt settings.
-- Login is via tty + `startx`. No display manager.
+`hypr/hyprland.lua` is the entry point and `require()`s modules from the same directory:
+- `programs.lua`: terminal (kitty), editor (emacsclient), launcher (fuzzel). Returns a table.
+- `monitors.lua`: DP-3 1920x1080 at 0x123 (left), DP-2 2560x1440 at 1920x0 (right, the big one).
+  X11 names DisplayPort-1/2 are DP-2/DP-3 on Wayland.
+- `look.lua`: master layout (≈ xmonad Tall), gaps 8/16, border 3 with a cyan→magenta gradient on the
+  focused window, keyboard layouts `it,us`.
+- `workspaces.lua`: persistent ids 1-8 named graphics, web, emacs, terms, gaming, chat, mix, sound.
+  Workspace 1 starts on DP-3 and 2 on DP-2.
+- `wsfocus.lua`: global `ws_here(n)` = xmonad-style switching. Workspace N is shown on the monitor you are
+  on, swapping with the other screen if it shows N. Plain `focus({workspace=N})` jumps to the monitor that
+  owns N, which makes the two screens look linked. Used by `SUPER+N` and the eww workspace buttons.
+- `rules.lua`: floats, app→workspace placement (`silent`, like doShift: firefox 2, emacs 3, kitty 4,
+  steam 5, slack 6, pavucontrol 8) and `slack-no-self-fullscreen` (Slack fullscreens itself and covers the bar).
+- `binds.lua`: xmonad default keys + myKeys. **Every bind has a description** `"Section::key label::text"`
+  (key label optional) which the keybinds popup reads from `hyprctl binds -j`; binds without one are not listed.
+  Notable: `SUPER+SHIFT+H` keybinds popup (`SUPER+H` is xmonad's "shrink master"), `SUPER+SHIFT+space`
+  switch keyboard layout, `SUPER+F7..F12` prev/next/play/mute/vol-/vol+ (the Unicomp Model M has no media keys;
+  `XF86Audio*` binds are kept but unlisted), `SUPER+SHIFT+A` kill-all (a Lua function).
+- `autostart.lua`: `hl.on("hyprland.start", ...)`: polkit agent, cliphist, dunst, awww-daemon, wallpapers
+  (DP-2 `main.png`, DP-3 `second.jpg`, from `~/.local/share/wallpapers/`, **outside the repo**), eww bars on both
+  monitors, then emacs daemon, firefox, pavucontrol, slack, steam, editor, terminal.
 
-**Hyprland side (repo): Lua config, passes `--verify-config`, never run live yet**
-- `hypr/hyprland.lua` entry point, `require()`s modules from the same directory:
-  - `programs.lua`: terminal (kitty), editor (emacsclient), launcher (fuzzel). Returns a table.
-  - `monitors.lua`: DP-3 1920x1080@60 at 0x123 (left), DP-2 2560x1440@60 at 1920x0 (right).
-    X11 names DisplayPort-1/2 are DP-2/DP-3 on Wayland (from `/sys/class/drm`).
-  - `look.lua`: master layout (≈ xmonad Tall), gaps 8/16, border 3, `#46d9ff`/`#282c34`, kb `it`.
-  - `workspaces.lua`: ids 1-8 with xmonad names as `default_name`, persistent.
-  - `rules.lua`: floats + app→workspace placement from `myManageHook` (`silent`, like doShift).
-  - `binds.lua`: xmonad default keys + `myKeys` (see file). `SUPER+SHIFT+A` kill-all is a Lua function.
-  - `autostart.lua`: `hl.on("hyprland.start", ...)`: dunst, awww wallpaper, eww on both monitors, apps.
-- `eww/eww.yuck`: `bar` window takes a `[monitor]` arg, opened via `eww open-many`. Labels use `${VAR}`.
-  Brightness removed (desktop, no `/sys/class/backlight`).
-- `eww/scripts/`: `workspaces.sh` (names, active in brackets), `cpu.sh`, `net.sh`, `weather.sh` (wttr.in),
-  `get_volume.sh`, `used_memory.sh`.
-- `fuzzel/fuzzel.ini`: launcher config (Catppuccin colors).
-- `kitty/kitty.conf`: terminal config (TokyoNight colors, FiraCode Nerd Font).
-- `waybar/`, `wallust/`, `hypr/README.md`, `kitty/README.md`: empty placeholders.
+## eww bar (`eww/`)
 
-**What's actually deployed in `~/.config` (diverges from repo!)**
-- `~/.config/hypr`, `kitty`, `waybar`, `wallust`, `rofi`, `swaync` are a
-  **JaKooLit Hyprland-Dots v2.3.15** install, NOT this repo's files. Real directories, not symlinks.
-  Its hyprlang `hyprland.conf` doesn't load on Hyprland 0.57.
-- `~/.config/hypr/hyprland.lua` is a stock autogenerated default (created 2026-11-02 by a
-  `--verify-config` run without `-c`). Hyprland currently loads this, not the repo config.
-- `~/.config/eww/eww.{yuck,scss}` are symlinked to this repo; `~/.config/eww/scripts/` is a plain
-  directory of copies, so the new scripts aren't deployed.
-- `~/.config/fuzzel` does not exist.
-- Symlinked to the repo: `~/.xinitrc`, `~/.zshrc`, `~/.emacs`, `~/.xmobarrc`, `~/.xmonad/xmonad.hs`.
+- `eww.yuck`: windows `bar [monitor]` (opened with `eww open-many bar:bar0 bar:bar1 --arg bar0:monitor=0
+  --arg bar1:monitor=1`), `weather-input [monitor]` (click the weather item) and `keys [monitor]` (keybinds popup).
+  Three floating segments: workspaces (+ `HOSTNAME//` tag), CPU/GPU/memory with icons and meters, and
+  keyboard flag / volume / weather / date / time.
+- `eww.scss`: cyberpunk palette `#0a0a12` bg, `#46d9ff` cyan, `#ff2a6d` magenta, `#f9f002` yellow, `#5a6078` dim,
+  `#d6e4ff` text. The same palette is in `hypr/look.lua`, `kitty/kitty.conf` and `fuzzel/fuzzel.ini`.
+- `eww/scripts/`: `workspaces_json.sh` (workspaces 1-8 only; Hyprland creates a hidden extra one on its own),
+  `workspaces.sh` (old text version), `cpu.sh`, `gpu.sh` (AMD sysfs), `mem.sh`, `get_volume.sh`,
+  `kb_layout.sh` (flag, click or shortcut switches), `weather.sh` + `set_location.sh` (location stored in
+  `~/.config/eww/location`, empty = IP guess), `keys.sh` + `toggle_keys.sh` (keybinds popup).
+- Fonts: JetBrainsMono Nerd Font for the bar, **Orbitron** for the popup. Orbitron is not in the repos;
+  `arch/arch_post.sh` downloads it to `/usr/local/share/fonts/orbitron/`.
 
-Installed packages (relevant): hyprland 0.57, eww, fuzzel, kitty, waybar, wallust,
-hyprpaper, dunst, awww (swww fork), jq, playerctl, xmonad, xmobar. Not installed: hyprlock, hypridle, papirus-icon-theme.
+### eww 0.5.0 gotchas
+- `:exclusive true` only reserves space if the geometry has an `:anchor`.
+- No `:truncate` attribute and no `eww poll`; use `eww update VAR=...` to push a poll variable.
+- A layer window with no explicit `:width` gets its minimum size and labels collapse to `…`.
+- `centerbox` splits the free space equally, which squeezed the left segment; the bar uses a plain `box`.
+- `eww reload` sometimes prints `Error reading response from server`; it usually applied anyway.
+- The daemon does not see fonts installed after it started, and a stuck daemon ignores `eww kill`
+  (kill its PID, then `eww daemon`). Start it detached or the command hangs.
+- `:initial` on `defpoll`s avoids `Failed to turn '' into a value of type ...` at startup.
 
-### Hyprland 0.57 config is Lua
-Hyprland reads `~/.config/hypr/hyprland.lua`. hyprlang (`.conf`, `source=`, `bind =`) is rejected,
-even with `-c file.conf`.
+## Deployed vs repo (`~/.config`)
+
+- Symlinked to the repo: `hypr`, `fuzzel`, `eww/eww.yuck`, `eww/eww.scss`, `eww/scripts`,
+  plus `~/.zshrc` and `~/.emacs`.
+- **`~/.config/kitty` is NOT linked**: it is a real directory with an old config (own colors, FantasqueSansM font),
+  so the repo's `kitty/kitty.conf` (cyberpunk colors) is not in use. TODO: back it up and symlink.
+- `waybar`, `wallust`, `rofi`, `swaync` and `ags` in `~/.config` are leftover configs of the old JaKooLit
+  Hyprland-Dots install (backup in `~/.config/backup-jakoolit-20261102/`), all unused; their packages are
+  uninstalled.
+- `hypr/` also contains Emacs backups (`*.conf~`) of the old hyprlang files; `.gitignore` ignores `*~`.
+
+## Hyprland 0.57 config is Lua
+Hyprland reads `~/.config/hypr/hyprland.lua`. hyprlang (`.conf`, `source=`, `bind =`) is rejected.
 - Reference default: `/usr/share/hypr/hyprland.lua`; API stubs: `/usr/share/hypr/stubs/hl.meta.lua`.
 - **Always validate:** `Hyprland --verify-config -c ~/dotfiles/hypr/hyprland.lua` → `config ok`.
-  It checks dispatcher args (`hl.dsp.focus({bogus=1})` errors and lists valid keys) and window-rule
-  fields, so it's a cheap way to probe the API. Layout messages (`hl.dsp.layout("...")`) and
-  `hl.dsp.window.close({...})` args are NOT validated.
-- Never run `--verify-config` without `-c`: it writes a default `~/.config/hypr/hyprland.lua`.
-- Don't call `hl.exec_cmd` at top level (it breaks the checker); put it inside `hl.on("hyprland.start", ...)`.
+  It checks dispatcher args (`hl.dsp.focus({bogus=1})` errors and lists valid keys) and window-rule fields.
+  NOT validated: layout messages, `window.close({...})`, extra keys on `focus({workspace=...})`,
+  `suppress_event` values. Never run it without `-c` (it writes a default `~/.config/hypr/hyprland.lua`).
+- Don't call `hl.exec_cmd` at top level (breaks the checker); put it inside `hl.on("hyprland.start", ...)`.
 - `require("x")` resolves relative to the config file's directory.
+- `hyprctl dispatch '<lua expression>'` evaluates `hl.dispatch(<expr>)`: the expression must return a
+  dispatcher or a Lua function, e.g. `hyprctl dispatch 'ws_here(3)'` or
+  `hyprctl dispatch 'hl.dsp.workspace.rename({ workspace = 5, name = "gaming" })'`.
+- `hyprctl reload` does not rename workspaces that already exist; rename them live as above.
+- Keyboard: `hyprctl switchxkblayout all next`, state in `hyprctl devices -j` (`active_keymap`).
+- Screenshots: `grim -o DP-2 file.png` (installed). Useful for checking visual changes.
 
-### Next steps
-1. Deploy (ask first, back up the JaKooLit dirs): replace `~/.config/hypr` with a symlink to
-   `~/dotfiles/hypr`, symlink `~/.config/eww/scripts`, `~/.config/fuzzel`, `~/.config/kitty`.
-   Add those links to `arch/arch_post.sh`.
-2. First live run, from a tty (`start-hyprland`/`Hyprland`, or `uwsm start hyprland.desktop`).
-   Keep `startx` for xmonad working as fallback.
-3. Verify things the checker can't: app classes in `rules.lua` (`hyprctl clients`), kill-all bind,
-   master layout messages, eww `open-many` with the monitor arg, awww wallpaper.
+## Next steps
+1. Optional disk cleanup of XMonad leftovers outside the repo: `~/.xmonad/` (build cache), `~/.Xauthority`,
+   `~/.local/bin/kernel` (an xmobar helper), `~/.config/{waybar,wallust,rofi,swaync,ags}`.
+2. Link `~/.config/kitty` to the repo (ask first, back up the old directory) and add it to `arch_post.sh`.
+3. Install `hyprlock` + `hypridle` (no screen lock or idle handling at the moment).
+4. `arch/arch_post.sh` still sets `SCRIPT_HOSTNAME=albireo` but the machine is `arcturus`, and its package
+   list lacks eww, fuzzel, awww, grim, jq, playerctl, steam. The wallpapers in `~/.local/share/wallpapers/` are not reproducible from the repo.
 
 ## Other contents
-- `arch/install.sh`, `arch/arch_post.sh`: fresh-install scripts. `arch_post.sh` has
-  uncommitted changes switching the package list from X11/xmonad/pulseaudio to
-  hyprland/kitty/pipewire, and it still symlinks the X11 files and does not link any Wayland configs.
+- `arch/install.sh`: bootstraps the system and downloads `arch_post.sh` **from GitHub `main`** into the
+  chroot, so changes to `arch_post.sh` only take effect once pushed. `arch/arch_post.sh`: post-install.
 - `zsh/.zshrc` (oh-my-zsh + powerlevel10k), `.emacs`, `bash/`.
 - `audio/scripts/install.sh`: installs audio/guitar plugins (guitarix, carla, reaper, ardour...). Untracked.
 
 ## Conventions
 - Configs are deployed by **symlinking** repo files into `$HOME` / `~/.config`
   (see the `ln -s` block in `arch/arch_post.sh`). New configs should follow that and be added there.
-- Emacs leaves `*~` backup files around. They are noise, don't commit them
-  (consider a `.gitignore` with `*~`).
-- Commit messages: short, imperative, no prefix (e.g. "First stab at main hyprland config").
+- Don't commit `*~` files (`.gitignore` covers them). Keep the user's unrelated uncommitted edits
+  (`.emacs`, `.zshrc`, `audio/`) out of commits unless asked.
+- Commit messages: short, imperative, no prefix (e.g. "Add GPU meter and weather location input to eww bar").
 - Never read `.env` / `.envrc` files.
+- Don't use broad `pkill` patterns (`pkill kitty` would kill the user's terminals); kill by exact PID or an
+  anchored command line.
