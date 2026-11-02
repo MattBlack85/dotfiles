@@ -1,20 +1,85 @@
-.bar {
-  background: #1e1e2e;
-  color: #cdd6f4;
+// Cyberpunk palette -- keep in sync with hypr/look.lua, kitty.conf, fuzzel.ini
+$bg:      #0a0a12;
+$panel:   rgba(10, 10, 18, 0.88);
+$cyan:    #46d9ff;
+$magenta: #ff2a6d;
+$yellow:  #f9f002;
+$dim:     #5a6078;
+$text:    #d6e4ff;
+
+* {
+  all: unset;
   font-family: "JetBrainsMono Nerd Font";
-  font-size: 14px;
-  padding: 4px 12px;
-  border-bottom: 2px solid #89b4fa;
+  font-size: 13px;
+  font-weight: bold;
 }
 
-.left, .center, .right {
-  padding: 0 10px;
+// transparent bar window: only the segments are drawn
+.bar {
+  background: transparent;
+  padding: 4px 8px;
 }
 
-.center { 
-  margin: 0 auto;
+// every segment: dark panel, thin neon frame, heavier "notch" on the edges
+.seg {
+  background-color: $panel;
+  color: $text;
+  padding: 0 14px;
+  min-height: 30px;
+  border: 1px solid rgba($cyan, 0.45);
+  border-left: 4px solid $cyan;
+  border-right: 4px solid $magenta;
+  box-shadow: 0 0 10px rgba($cyan, 0.35), inset 0 0 8px rgba($cyan, 0.08);
 }
 
-label {
-  margin: 0 8px;
+.seg-tag {
+  color: $magenta;
+  margin-right: 10px;
+  text-shadow: 0 0 6px rgba($magenta, 0.8);
+}
+
+// workspaces
+.ws {
+  color: $dim;
+  padding: 0 8px;
+  border-bottom: 2px solid transparent;
+  transition: all 150ms ease;
+}
+.ws:hover {
+  color: $cyan;
+}
+.ws-active {
+  color: $bg;
+  background-color: $cyan;
+  border-bottom: 2px solid $magenta;
+  box-shadow: 0 0 12px rgba($cyan, 0.9);
+}
+
+// stats
+.stat       { color: $text; }
+.cpu        { color: $cyan;    text-shadow: 0 0 6px rgba($cyan, 0.7); }
+.mem        { color: $magenta; text-shadow: 0 0 6px rgba($magenta, 0.7); }
+.vol        { color: $cyan; }
+.muted      { color: $magenta; }
+.weather    { color: $dim; }
+.date       { color: $text; }
+.time       { color: $yellow; text-shadow: 0 0 8px rgba($yellow, 0.8); }
+
+// icons + meters
+.icon { font-size: 16px; }
+
+.meter trough {
+  min-width: 70px;
+  min-height: 6px;
+  background-color: rgba($dim, 0.35);
+}
+.cpu .meter progress {
+  min-height: 6px;
+  background-color: $cyan;
+  box-shadow: 0 0 8px rgba($cyan, 0.9);
+}
+.mem .meter progress {
+  min-height: 6px;
+  background-color: $magenta;
+  box-shadow: 0 0 8px rgba($magenta, 0.9);
 }

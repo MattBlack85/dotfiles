@@ -1,34 +1,57 @@
 ;; ----------- Workspaces -------------
-(defpoll WORKSPACES :interval "2s" "hyprctl workspaces -j | jq -r '.[].id' | tr '\n' ' '")
+(defpoll WS :interval "500ms" :initial "[]" "~/.config/eww/scripts/workspaces_json.sh")
+
+(defpoll HOST :interval "3600s" :initial "" "hostname | tr '[:lower:]' '[:upper:]'")
 
 ;; ----------- System Stats -----------
-(defpoll CPU :interval "5s" "~/.config/eww/scripts/cpu.sh")
-(defpoll MEM :interval "5s" "~/.config/eww/scripts/used_memory.sh")
-(defpoll NET :interval "5s" "~/.config/eww/scripts/net.sh")
+(defpoll CPU :interval "2s" :initial "0" "~/.config/eww/scripts/cpu.sh")
+(defpoll MEM :interval "3s" :initial "{\"pct\":0,\"used\":\"-\",\"free\":\"-\",\"total\":\"-\"}" "~/.config/eww/scripts/mem.sh")
 
-;; ----------- Volume / Brightness ----
+;; ----------- Volume ------------------
 (defpoll VOLUME :interval "1s" "~/.config/eww/scripts/get_volume.sh")
-(defpoll BRIGHTNESS :interval "5s" "~/.config/eww/scripts/brightness.sh")
 
 ;; ----------- Clock & Weather --------
-(defpoll TIME :interval "1s" "date '+%H:%M'")
-(defpoll DATE :interval "60s" "date '+%a %d %b'")
+(defpoll TIME :interval "1s" "date '+%H:%M:%S'")
+(defpoll DATE :interval "60s" "date '+%a %d %b' | tr '[:lower:]' '[:upper:]'")
 (defpoll WEATHER :interval "600s" "~/.config/eww/scripts/weather.sh")
+
+;; ----------- Segments ---------------
+
+(defwidget workspaces []
+  (box :class "seg seg-ws" :orientation "h" :space-evenly false :spacing 4
+    (label :class "seg-tag" :truncate false :text "${HOST}//")
+    (for w in WS
+      (button :class {w.active ? "ws ws-active" : "ws"}
+              :onclick "hyprctl dispatch 'hl.dsp.focus({ workspace = ${w.id} })'"
+        {w.name}))))
+
+(defwidget stats []
+  (box :class "seg seg-stats" :orientation "h" :space-evenly false :spacing 28
+    (box :class "stat cpu" :orientation "h" :space-evenly false :spacing 10
+      (label :class "icon" :text "")
+      (label :text "CPU ${CPU}%")
+      (progress :class "meter" :orientation "h" :value CPU :valign "center"))
+    (box :class "stat mem" :orientation "h" :space-evenly false :spacing 10
+      (label :class "icon" :text "󰍛")
+      (label :text "${MEM.used} used / ${MEM.free} free")
+      (progress :class "meter" :orientation "h" :value {MEM.pct} :valign "center"))))
+
+(defwidget status []
+  (box :class "seg seg-right" :orientation "h" :space-evenly false :spacing 18
+    (label :class {VOLUME == "MUTED" ? "stat vol muted" : "stat vol"}
+           :text {VOLUME == "MUTED" ? " MUTED" : " ${VOLUME}%"})
+    (label :class "stat weather" :text " ${WEATHER}")
+    (label :class "stat date" :text " ${DATE}")
+    (label :class "stat time" :text "${TIME}")))
 
 ;; ----------- Bar Window -------------
 
-(defwindow bar
-  :monitor 0
-  :geometry (geometry :x "0" :y "0" :width "100%" :height "30px")
+(defwindow bar [monitor]
+  :monitor monitor
+  :geometry (geometry :x "0" :y "0" :width "100%" :height "40px" :anchor "top center")
+  :stacking "fg"
   :exclusive true
-  :layer "top"
-  (box :class "bar"
-    (box :class "left"
-      (label :text "  {WORKSPACES}"))
-    (box :class "center"
-      (label :text {" " + CPU + " %   " + MEM + "%   " + NET}))
-    (box :class "right"
-      (label :text {VOLUME == "MUTED" ? " Muted" : "   " + VOLUME + "%"} )
-      (label :text " {BRIGHTNESS}%")
-      (label :text " {DATE}   {TIME}")
-      (label :text " {WEATHER}"))))
+  (box :class "bar" :orientation "h" :space-evenly false
+    (box :halign "start" :hexpand false (workspaces))
+    (box :halign "center" :hexpand true (stats))
+    (box :halign "end" :hexpand false (status))))
