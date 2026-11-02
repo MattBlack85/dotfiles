@@ -36,7 +36,7 @@ hl.config({
     },
 
     input = {
-        kb_layout    = "it",
+        kb_layout    = "it,us",   -- first is the default; switch with SUPER+SHIFT+space or click the bar flag
         follow_mouse = 1,
         sensitivity  = 0,
     },

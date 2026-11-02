@@ -1,6 +1,7 @@
 ;; ----------- Workspaces -------------
 (defpoll WS :interval "500ms" :initial "[]" "~/.config/eww/scripts/workspaces_json.sh")
 
+(defpoll KB :interval "1s" :initial "" "~/.config/eww/scripts/kb_layout.sh")
 (defpoll HOST :interval "3600s" :initial "" "hostname | tr '[:lower:]' '[:upper:]'")
 
 ;; ----------- System Stats -----------
@@ -9,7 +10,7 @@
 (defpoll MEM :interval "3s" :initial "{\"pct\":0,\"used\":\"-\",\"free\":\"-\",\"total\":\"-\"}" "~/.config/eww/scripts/mem.sh")
 
 ;; ----------- Volume ------------------
-(defpoll VOLUME :interval "1s" "~/.config/eww/scripts/get_volume.sh")
+(defpoll VOLUME :interval "1s" :initial "0" "~/.config/eww/scripts/get_volume.sh")
 
 ;; ----------- Clock & Weather --------
 (defpoll TIME :interval "1s" "date '+%H:%M:%S'")
@@ -20,7 +21,7 @@
 
 (defwidget workspaces []
   (box :class "seg seg-ws" :orientation "h" :space-evenly false :spacing 4
-    (label :class "seg-tag" :truncate false :text "${HOST}//")
+    (label :class "seg-tag" :text "${HOST}//")
     (for w in WS
       (button :class {w.active ? "ws ws-active" : "ws"}
               :onclick "hyprctl dispatch 'ws_here(${w.id})'"
@@ -43,6 +44,10 @@
 
 (defwidget status [monitor]
   (box :class "seg seg-right" :orientation "h" :space-evenly false :spacing 18
+    (eventbox :cursor "pointer"
+              :tooltip "Keyboard layout (click or SUPER+SHIFT+space to switch)"
+              :onclick "hyprctl switchxkblayout all next"
+      (label :class "stat kb" :text KB))
     (box :class {VOLUME == "MUTED" ? "stat vol muted" : "stat vol"} :orientation "h" :space-evenly false :spacing 8
       (label :class "icon"
              :text {VOLUME == "MUTED" ? "󰝟" : VOLUME >= 60 ? "󰕾" : VOLUME >= 25 ? "󰖀" : "󰕿"})
@@ -79,3 +84,32 @@
     (label :class "seg-tag" :text "LOCATION")
     (input :class "loc-input"
            :onaccept "~/.config/eww/scripts/set_location.sh '{}'")))
+
+;; ----------- Keybinds popup ---------
+;; SUPER+SHIFT+H (scripts/toggle_keys.sh). KEYS is filled by scripts/keys.sh from the live binds.
+
+(defvar KEYS "{\"left\":[],\"right\":[]}")
+
+(defwidget keycol [col]
+  (box :class "kcol" :orientation "v" :space-evenly false :valign "start"
+    (for sec in col
+      (box :class "ksec" :orientation "v" :space-evenly false
+        (label :class "ksec-title" :halign "start" :xalign 0 :text {sec.section})
+        (for it in {sec.items}
+          (box :class "krow" :orientation "h" :space-evenly false :spacing 14
+            (label :class "kkeys" :halign "start" :xalign 0 :text {it.keys})
+            (label :class "ktext" :halign "start" :xalign 0 :text {it.text})))))))
+
+(defwindow keys [monitor]
+  :monitor monitor
+  :geometry (geometry :x "16px" :y "0px" :width "1120px" :anchor "left center")
+  :stacking "overlay"
+  :exclusive false
+  :focusable false
+  (eventbox :onclick "eww close keys"
+    (box :class "keys" :orientation "v" :space-evenly false
+      (label :class "keys-title" :halign "start" :text "KEYBINDS")
+      (box :orientation "h" :space-evenly false :spacing 36
+        (keycol :col {KEYS.left})
+        (keycol :col {KEYS.right}))
+      (label :class "keys-hint" :halign "start" :text "SUPER + SHIFT + H or click to close"))))

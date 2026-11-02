@@ -96,8 +96,40 @@ $text:    #d6e4ff;
   min-width: 170px;
 }
 .weather:hover { color: $cyan; }
+.kb { color: $magenta; text-shadow: 0 0 6px rgba($magenta, 0.7); }
+.kb:hover { color: $cyan; }
 .gpu .meter progress {
   min-height: 6px;
   background-color: $yellow;
   box-shadow: 0 0 8px rgba($yellow, 0.9);
 }
+
+// keybinds popup (Orbitron, installed by arch/arch_post.sh)
+.keys, .keys * { font-family: "Orbitron", "JetBrainsMono Nerd Font"; }
+.keys {
+  background-color: rgba(10, 10, 18, 0.80);
+  border: 1px solid rgba($cyan, 0.45);
+  border-left: 4px solid $cyan;
+  border-right: 4px solid $magenta;
+  box-shadow: 0 0 18px rgba($cyan, 0.35), inset 0 0 14px rgba($cyan, 0.08);
+  padding: 18px 24px;
+}
+.keys-title {
+  color: $magenta;
+  font-size: 18px;
+  text-shadow: 0 0 8px rgba($magenta, 0.8);
+  margin-bottom: 6px;
+}
+.ksec-title {
+  color: $cyan;
+  font-size: 12px;
+  margin-top: 14px;
+  margin-bottom: 4px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba($cyan, 0.4);
+  text-shadow: 0 0 6px rgba($cyan, 0.7);
+}
+.krow  { padding: 2px 0; }
+.kkeys { color: $yellow; font-size: 11px; min-width: 200px; text-shadow: 0 0 5px rgba($yellow, 0.5); }
+.ktext { color: $text;   font-size: 11px; min-width: 300px; }
+.keys-hint { color: $dim; font-size: 9px; margin-top: 14px; }

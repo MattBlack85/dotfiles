@@ -79,6 +79,15 @@ fi
 # Install fonts for powerline
 export HOME=/home/$SCRIPT_USER/ && ./home/$SCRIPT_USER/data/repos/fonts/install.sh
 
+# Orbitron (cyberpunk font used by the eww keybinds popup), SIL Open Font License.
+# Not in the official repos and paru can't run as root, so install the file system-wide.
+if [ ! -f /usr/local/share/fonts/orbitron/Orbitron.ttf ]; then
+    mkdir -p /usr/local/share/fonts/orbitron
+    wget -q -O /usr/local/share/fonts/orbitron/Orbitron.ttf \
+        'https://github.com/google/fonts/raw/main/ofl/orbitron/Orbitron%5Bwght%5D.ttf'
+    fc-cache -f
+fi
+
 # Link dotfiles to locations where they are used for real so they will be synced with git repos
 ln -s /home/$SCRIPT_USER/data/repos/dotfiles/.emacs /home/$SCRIPT_USER/.emacs
 ln -s /home/$SCRIPT_USER/data/repos/dotfiles/zsh/.zshrc /home/$SCRIPT_USER/.zshrc
