@@ -15,12 +15,13 @@ export UPDATE_ZSH_DAYS=7
 export DEFAULT_USER="matt"
 prompt_context(){}
 
-plugins=(archlinux direnv emacs git python rust)
+plugins=(archlinux direnv emacs git python rust sudo)
 
 source $ZSH/oh-my-zsh.sh
 
 alias activate_venv='pipenv shell'
-alias sudo='sudo -E'
+alias sudo='sudo-rs'
+alias su='su-rs'
 alias glog_extra='git log --all --decorate=full --oneline --graph'
 alias docker-prune='docker system prune'
 alias nuke-stopped-docker-container='docker rm `docker ps --no-trunc -aq`'
@@ -33,7 +34,7 @@ alias generate-ed25519-ssh-key='ssh-keygen -t ed25519 -C "$USER@$HOST"'
 alias aws-vault='aws-vault --backend=pass'
 alias turn-off='rsync-backup && poweroff'
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/home/$USER/.local/bin:/home/$USER/bin:$HOME/data/.cargo/bin:/opt/tfenv/bin:/opt/PixInsight/bin:/home/$USER/development/flutter/bin:$HOME/.pub-cache/bin:${ASDF_DATA_DIR:-$HOME/.asdf}/shims:${PYENV_ROOT}/bin:$PATH"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/home/$USER/.local/bin:/home/$USER/bin:$HOME/data/.cargo/bin:/opt/tfenv/bin:/opt/PixInsight/bin:/home/$USER/data/development/flutter/bin:$HOME/.pub-cache/bin:${ASDF_DATA_DIR:-$HOME/.asdf}/shims:${PYENV_ROOT}/bin:$PATH"
 export EDITOR='emacsclient -c -a "emacs"'
 export PYENV_ROOT="$HOME/.pyenv"
 export RUSTUP_HOME="$HOME/data/.rustup"
@@ -106,10 +107,10 @@ function rsync-backup () {
     sudo mount /dev/nvme0n1p2 /home/matt/data/rsync-backup-main-disk/root
     echo "Mounted /dev/nvme0n1p2"
     echo "Rsyncing /boot"
-    sudo rsync -aAXHv --progress  --ignore-existing --delete /boot /home/matt/data/rsync-backup-main-disk/boot
+    sudo rsync -aAXHv --progress --delete /boot/ /home/matt/data/rsync-backup-main-disk/boot/
     echo "/boot rysnced"
     echo "Rsyncing now the whole disk"
-    sudo rsync -aAXHv --progress --exclude=/dev/\* --exclude=/proc/\* --exclude=/sys/\* --exclude=/var/tmp/\* --exclude=/var/spool/\* --exclude=/tmp/\* --exclude=/run/\* --exclude=/mnt/\* --exclude=/media/\* --exclude=/lost+found --exclude=/boot/\* --exclude=/home/matt/data/\* --exclude=/home/matt/games/\* --exclude=/home/matt/data/rsync-backup-main-disk/\* --ignore-existing --delete / /home/matt/data/rsync-backup-main-disk/root
+    sudo rsync -aAXHv --progress --delete --exclude=/etc/fstab --exclude=/dev/\* --exclude=/proc/\* --exclude=/sys/\* --exclude=/var/tmp/\* --exclude=/var/spool/\* --exclude=/tmp/\* --exclude=/run/\* --exclude=/mnt/\* --exclude=/media/\* --exclude=/lost+found --exclude=/boot/\* --exclude=/home/matt/data/\* --exclude=/home/matt/games/\* --exclude=/home/matt/data/rsync-backup-main-disk/\* / /home/matt/data/rsync-backup-main-disk/root
     echo "Whole disk rsynced"
     echo "Umounting /home/matt/data/rsync-backup-main-disk/boot"
     sudo umount /home/matt/data/rsync-backup-main-disk/boot
@@ -117,6 +118,25 @@ function rsync-backup () {
     echo "Umounting /home/matt/data/rsync-backup-main-disk/root"
     sudo umount /home/matt/data/rsync-backup-main-disk/root
     echo "Umounted"
+}
+
+function bootstrap-arch-x64-qemu () {
+    if [ ! -d "$HOME/data/qemu-archlinux-x64" ]; then
+	mkdir ~/data/qemu-archlinux-x64
+    fi
+    
+    cd $HOME/data/qemu-archlinux-x64
+
+    if [ ! -f "$HOME/data/qemu-archlinux-x64/arch.qcow2" ]; then
+	qemu-img create -f qcow2 arch.qcow2 10G
+    fi
+
+    if [ ! -f "$HOME/data/qemu-archlinux-x64/archlinux-x86_64.iso" ]; then
+	wget https://ftp.icm.edu.pl/pub/Linux/dist/archlinux/iso/latest/archlinux-x86_64.iso
+    fi
+
+    qemu-system-x86_64 -m 4096 -smp 2 -cdrom archlinux-x86_64.iso -boot menu=on -drive file=arch.qcow2 -drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/x64/OVMF_CODE.4m.fd -drive if=pflash,format=raw,file=/usr/share/OVMF/x64/OVMF_VARS.4m.fd
+    
 }
 
 eval "$(atuin init zsh)"
