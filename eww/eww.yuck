@@ -23,7 +23,7 @@
     (label :class "seg-tag" :truncate false :text "${HOST}//")
     (for w in WS
       (button :class {w.active ? "ws ws-active" : "ws"}
-              :onclick "hyprctl dispatch 'hl.dsp.focus({ workspace = ${w.id} })'"
+              :onclick "hyprctl dispatch 'ws_here(${w.id})'"
         {w.name}))))
 
 (defwidget stats []
@@ -43,8 +43,10 @@
 
 (defwidget status [monitor]
   (box :class "seg seg-right" :orientation "h" :space-evenly false :spacing 18
-    (label :class {VOLUME == "MUTED" ? "stat vol muted" : "stat vol"}
-           :text {VOLUME == "MUTED" ? " MUTED" : " ${VOLUME}%"})
+    (box :class {VOLUME == "MUTED" ? "stat vol muted" : "stat vol"} :orientation "h" :space-evenly false :spacing 8
+      (label :class "icon"
+             :text {VOLUME == "MUTED" ? "󰝟" : VOLUME >= 60 ? "󰕾" : VOLUME >= 25 ? "󰖀" : "󰕿"})
+      (label :text {VOLUME == "MUTED" ? "MUTED" : "${VOLUME}%"}))
     (eventbox :cursor "pointer"
               :tooltip "Click to set the weather location"
               :onclick "eww open weather-input --arg monitor=${monitor}"

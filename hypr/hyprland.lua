@@ -6,6 +6,7 @@
 require("monitors")
 require("look")
 require("workspaces")
+require("wsfocus")
 require("rules")
 require("binds")
 require("autostart")

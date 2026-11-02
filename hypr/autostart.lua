@@ -12,6 +12,9 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("dunst")
     hl.exec_cmd("awww-daemon")
     hl.exec_cmd("sleep 1 && awww img " .. wallpaper)
+    -- Wallpapers: DP-2 (big) and DP-3 each get their own image.
+    hl.exec_cmd("sleep 2 && awww img -o DP-2 --resize crop ~/.local/share/cyber-rain/main.png")
+    hl.exec_cmd("sleep 2 && awww img -o DP-3 --resize crop ~/.local/share/cyber-rain/second.jpg")
     -- eww bar on both monitors (xmobar ran on both too)
     hl.exec_cmd("eww open-many bar:bar0 bar:bar1 --arg bar0:monitor=0 --arg bar1:monitor=1")
 
@@ -20,6 +23,7 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("firefox")
     hl.exec_cmd("pavucontrol")
     hl.exec_cmd("slack")
+    hl.exec_cmd("steam")
     hl.exec_cmd("sleep 3 && " .. P.editor) -- give the emacs daemon time to come up
     hl.exec_cmd(P.terminal)
 end)

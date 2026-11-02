@@ -45,7 +45,7 @@ bind("SHIFT + comma",  hl.dsp.window.move({ monitor = "-1" }))
 
 -- Workspaces 1-8
 for i = 1, 8 do
-    bind(tostring(i),             hl.dsp.focus({ workspace = i }))
+    bind(tostring(i),             ws_here(i)) -- see wsfocus.lua
     bind("SHIFT + " .. i,         hl.dsp.window.move({ workspace = i }))
 end
 

@@ -20,6 +20,7 @@ local placements = {
     { class = "(?i)^(emacs)$",                     ws = "3" }, -- emacs
     { class = "^(kitty)$",                         ws = "4" }, -- terms
     { class = "(?i)^(slack)$",                     ws = "6" }, -- chat
+    { class = "^(steam)$",                         ws = "5" }, -- gaming
     { class = "(?i)^(org\\.pulseaudio\\.)?pavucontrol$", ws = "8" }, -- sound
 }
 
@@ -30,6 +31,14 @@ for _, p in ipairs(placements) do
         workspace = p.ws .. " silent",
     })
 end
+
+-- Slack asks to go fullscreen on its own, which covers the eww bar. Ignore that
+-- (SUPER+F still toggles fullscreen when you want it).
+hl.window_rule({
+    name           = "slack-no-self-fullscreen",
+    match          = { class = "(?i)^(slack)$" },
+    suppress_event = "fullscreen fullscreenoutput",
+})
 
 -- From the Hyprland default config
 hl.window_rule({
