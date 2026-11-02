@@ -5,6 +5,7 @@
 
 ;; ----------- System Stats -----------
 (defpoll CPU :interval "2s" :initial "0" "~/.config/eww/scripts/cpu.sh")
+(defpoll GPU :interval "2s" :initial "0" "~/.config/eww/scripts/gpu.sh")
 (defpoll MEM :interval "3s" :initial "{\"pct\":0,\"used\":\"-\",\"free\":\"-\",\"total\":\"-\"}" "~/.config/eww/scripts/mem.sh")
 
 ;; ----------- Volume ------------------
@@ -29,18 +30,25 @@
   (box :class "seg seg-stats" :orientation "h" :space-evenly false :spacing 28
     (box :class "stat cpu" :orientation "h" :space-evenly false :spacing 10
       (label :class "icon" :text "")
-      (label :text "CPU ${CPU}%")
+      (label :text "${CPU}%")
       (progress :class "meter" :orientation "h" :value CPU :valign "center"))
+    (box :class "stat gpu" :orientation "h" :space-evenly false :spacing 10
+      (label :class "icon" :text "󰢮")
+      (label :text "${GPU}%")
+      (progress :class "meter" :orientation "h" :value GPU :valign "center"))
     (box :class "stat mem" :orientation "h" :space-evenly false :spacing 10
       (label :class "icon" :text "󰍛")
-      (label :text "${MEM.used} used / ${MEM.free} free")
+      (label :text "${MEM.used}/${MEM.free}")
       (progress :class "meter" :orientation "h" :value {MEM.pct} :valign "center"))))
 
-(defwidget status []
+(defwidget status [monitor]
   (box :class "seg seg-right" :orientation "h" :space-evenly false :spacing 18
     (label :class {VOLUME == "MUTED" ? "stat vol muted" : "stat vol"}
            :text {VOLUME == "MUTED" ? " MUTED" : " ${VOLUME}%"})
-    (label :class "stat weather" :text " ${WEATHER}")
+    (eventbox :cursor "pointer"
+              :tooltip "Click to set the weather location"
+              :onclick "eww open weather-input --arg monitor=${monitor}"
+      (label :class "stat weather" :text " ${WEATHER}"))
     (label :class "stat date" :text " ${DATE}")
     (label :class "stat time" :text "${TIME}")))
 
@@ -54,4 +62,18 @@
   (box :class "bar" :orientation "h" :space-evenly false
     (box :halign "start" :hexpand false (workspaces))
     (box :halign "center" :hexpand true (stats))
-    (box :halign "end" :hexpand false (status))))
+    (box :halign "end" :hexpand false (status :monitor monitor))))
+
+;; ----------- Weather location input -
+;; Opened by clicking the weather item. Enter saves, empty value = auto-detect.
+
+(defwindow weather-input [monitor]
+  :monitor monitor
+  :geometry (geometry :x "12px" :y "46px" :width "320px" :anchor "top right")
+  :stacking "overlay"
+  :focusable true
+  :exclusive false
+  (box :class "seg seg-input" :orientation "h" :space-evenly false :spacing 10
+    (label :class "seg-tag" :text "LOCATION")
+    (input :class "loc-input"
+           :onaccept "~/.config/eww/scripts/set_location.sh '{}'")))

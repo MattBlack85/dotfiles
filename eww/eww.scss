@@ -58,6 +58,7 @@ $text:    #d6e4ff;
 // stats
 .stat       { color: $text; }
 .cpu        { color: $cyan;    text-shadow: 0 0 6px rgba($cyan, 0.7); }
+.gpu        { color: $yellow;  text-shadow: 0 0 6px rgba($yellow, 0.7); }
 .mem        { color: $magenta; text-shadow: 0 0 6px rgba($magenta, 0.7); }
 .vol        { color: $cyan; }
 .muted      { color: $magenta; }
@@ -82,4 +83,21 @@ $text:    #d6e4ff;
   min-height: 6px;
   background-color: $magenta;
   box-shadow: 0 0 8px rgba($magenta, 0.9);
+}
+
+// weather location popup
+.seg-input { padding: 6px 14px; }
+.loc-input {
+  color: $yellow;
+  caret-color: $magenta;
+  background-color: rgba($cyan, 0.08);
+  border-bottom: 2px solid $cyan;
+  padding: 2px 6px;
+  min-width: 170px;
+}
+.weather:hover { color: $cyan; }
+.gpu .meter progress {
+  min-height: 6px;
+  background-color: $yellow;
+  box-shadow: 0 0 8px rgba($yellow, 0.9);
 }
