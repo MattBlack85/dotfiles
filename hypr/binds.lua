@@ -20,6 +20,12 @@ bind("D",              hl.dsp.exec_cmd(P.launcher),  nil)
 bind("V",              hl.dsp.exec_cmd("cliphist list | fuzzel --dmenu | cliphist decode | wl-copy"),
      "Programs::::Clipboard history")
 
+-- Image viewer: show workspace 1 (graphics) here, pick an image from ~/Pictures with fuzzel, open it in imv
+bind("I", function()
+    hl.dispatch(ws_here(1))
+    hl.dispatch(hl.dsp.exec_cmd("~/.config/hypr/scripts/pick-image.sh"))
+end, "Programs::::Image viewer (pick from Pictures)")
+
 -- Windows
 bind("SHIFT + C", hl.dsp.window.close(),                         "Windows::::Close window")
 bind("T",         hl.dsp.window.float({ action = "toggle" }),    "Windows::::Toggle floating")

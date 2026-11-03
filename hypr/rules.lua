@@ -22,6 +22,7 @@ local placements = {
     { class = "(?i)^(slack)$",                     ws = "6" }, -- chat
     { class = "^(steam)$",                         ws = "5" }, -- gaming
     { class = "(?i)^(org\\.pulseaudio\\.)?pavucontrol$", ws = "8" }, -- sound
+    { class = "^(imv)$",                           ws = "1" }, -- graphics
 }
 
 for _, p in ipairs(placements) do

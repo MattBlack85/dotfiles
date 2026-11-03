@@ -34,7 +34,7 @@ pacman -Sy sudo wpa_supplicant ntp efibootmgr grub python \
            bind dhcpcd direnv pyenv alacritty hyprland \
            ttf-jetbrains-mono-nerd ttf-firacode-nerd noto-fonts-emoji \
            hyprpolkitagent xdg-desktop-portal-hyprland wl-clipboard cliphist \
-           dunst fuzzel grim slurp jq playerctl awww hypridle hyprlock steam python-gobject python-pillow python-cairo vulkan-radeon lib32-vulkan-radeon \
+           dunst fuzzel grim slurp imv jq playerctl awww hypridle hyprlock steam python-gobject python-pillow python-cairo vulkan-radeon lib32-vulkan-radeon \
            base-devel rust libdbusmenu-gtk3 gtk3 gtk-layer-shell --noconfirm
 
 # Prompt for a new password for ROOT
@@ -119,6 +119,14 @@ ln -s /home/$SCRIPT_USER/data/repos/dotfiles/eww/eww.yuck /home/$SCRIPT_USER/.co
 ln -s /home/$SCRIPT_USER/data/repos/dotfiles/eww/eww.scss /home/$SCRIPT_USER/.config/eww/
 ln -s /home/$SCRIPT_USER/data/repos/dotfiles/eww/scripts /home/$SCRIPT_USER/.config/eww/scripts
 install -m 755 -o root -g root /home/$SCRIPT_USER/data/repos/dotfiles/bin/turn-off-root /usr/local/bin/turn-off-root  # root-owned copy for pkexec (turn-off button)
+
+# imv as the default image viewer (mimeapps.list is not linked from the repo: it holds machine-specific entries)
+mkdir -p /home/$SCRIPT_USER/.config
+MIMEAPPS=/home/$SCRIPT_USER/.config/mimeapps.list
+grep -q '^\[Default Applications\]' $MIMEAPPS 2>/dev/null || echo "[Default Applications]" >> $MIMEAPPS
+for t in png jpeg gif webp bmp tiff; do
+    grep -q "^image/$t=" $MIMEAPPS || sed -i "/^\[Default Applications\]/a image/$t=imv.desktop" $MIMEAPPS
+done
 
 # folders, links and files have been manipulated all by root, change owner
 chown $SCRIPT_USER:$SCRIPT_USER /home/$SCRIPT_USER -R
