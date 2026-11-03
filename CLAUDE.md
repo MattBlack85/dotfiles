@@ -34,7 +34,7 @@ git history (before the "Remove XMonad" commit) if ever needed; comments in `hyp
   Notable: `SUPER+SHIFT+H` keybinds popup (`SUPER+H` is xmonad's "shrink master"), `SUPER+SHIFT+space`
   switch keyboard layout, `SUPER+F7..F12` prev/next/play/mute/vol-/vol+ (the Unicomp Model M has no media keys;
   `XF86Audio*` binds are kept but unlisted), `SUPER+SHIFT+A` kill-all (a Lua function).
-- `autostart.lua`: `hl.on("hyprland.start", ...)`: polkit agent, cliphist, dunst, awww-daemon, wallpapers
+- `autostart.lua`: `hl.on("hyprland.start", ...)`: polkit agent, cliphist, dunst, hypridle, awww-daemon, wallpapers
   (DP-2 `main.png`, DP-3 `second.jpg`, from `~/.local/share/wallpapers/`, **outside the repo**), eww bars on both
   monitors, then emacs daemon, firefox, pavucontrol, slack, steam, editor, terminal.
 
@@ -94,7 +94,12 @@ Hyprland reads `~/.config/hypr/hyprland.lua`. hyprlang (`.conf`, `source=`, `bin
 1. Optional disk cleanup of XMonad leftovers outside the repo: `~/.xmonad/` (build cache), `~/.Xauthority`,
    `~/.local/bin/kernel` (an xmobar helper), `~/.config/{waybar,wallust,rofi,swaync,ags}`.
 2. Link `~/.config/kitty` to the repo (ask first, back up the old directory) and add it to `arch_post.sh`.
-3. Install `hyprlock` + `hypridle` (no screen lock or idle handling at the moment).
+3. Idle + lock: `hypr/hypridle.conf` (started from `autostart.lua`): after 5 min `hypr/scripts/screensaver.sh`
+   starts `hypr/scripts/neon-saver.py` on every monitor (the monitor's wallpaper from `~/.local/share/wallpapers/`
+   animated by a GLES fragment shader: drift, neon flicker/glow, scanlines, glitch; a gtk-layer-shell overlay),
+   after 10 min `loginctl lock-session` (runs `hyprlock` with `hypr/hyprlock.conf`, same wallpapers),
+   after 15 min `hypr/scripts/dpms.sh off`. `SUPER+CTRL+L` locks now. Needs `hypridle`, `hyprlock`, python-gobject,
+   python-pillow (in `arch_post.sh`). hyprlock/hypridle configs are hyprlang, not Lua. hyprlock is untested.
 4. `arch/arch_post.sh` still sets `SCRIPT_HOSTNAME=albireo` but the machine is `arcturus`, and its package
    list lacks eww, fuzzel, awww, grim, jq, playerctl, steam. The wallpapers in `~/.local/share/wallpapers/` are not reproducible from the repo.
 

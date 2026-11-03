@@ -69,6 +69,9 @@ bind("SHIFT + Q", hl.dsp.exit(),          "Session::::Quit Hyprland")
 -- Keyboard layout (it <-> us). Also switchable by clicking the flag in the eww bar.
 bind("SHIFT + space", hl.dsp.exec_cmd("hyprctl switchxkblayout all next"), "Session::SPACE::Switch keyboard layout (IT / US)")
 
+-- Lock the screen now (hyprlock, via hypridle's lock_cmd)
+bind("CTRL + L", hl.dsp.exec_cmd("loginctl lock-session"), "Session::::Lock screen")
+
 -- Help popup (SUPER+H is taken by "shrink master", so it lives on SHIFT+H)
 bind("SHIFT + H", hl.dsp.exec_cmd("~/.config/eww/scripts/toggle_keys.sh"), "Session::::This keybind list")
 

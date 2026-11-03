@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Override these values for custom username/hostname
-SCRIPT_HOSTNAME=albireo
+SCRIPT_HOSTNAME=arcturus
 SCRIPT_USER=matt
 
 # Set the right timezone
@@ -22,13 +22,20 @@ cat <<EOF > /etc/hosts
 127.0.1.1	${SCRIPT_HOSTNAME}.localdomain	${SCRIPT_HOSTNAME}
 EOF
 
-# Install some base packages
+# steam lives in [multilib], which is commented out on a fresh install
+sed -i '/^#\[multilib\]/,/^#Include/ s/^#//' /etc/pacman.conf
+
+# Install some base packages (one unknown name aborts the whole pacman run, so keep these names valid:
+# dnsutils is now "bind", nerdfonts is split into ttf-*-nerd). eww is AUR-only and not installed here.
 pacman -Sy sudo wpa_supplicant ntp efibootmgr grub python \
            python-pip emacs firefox net-tools htop sbcl git chromium \
-           networkmanager zsh pipewire pipewire-pulse gzip unzip openssh \
-           wget docker alsa-utils libxss make vlc linux-headers acpid \
-           dnsutils dhcpcd direnv pyenv kitty hyprland nerdfonts \
-           hyprpolkitagent xdg-desktop-portal-hyprland wl-clipboard cliphist --noconfirm
+           networkmanager zsh pipewire pipewire-pulse wireplumber gzip unzip openssh \
+           wget curl docker alsa-utils libxss make vlc linux-headers acpid \
+           bind dhcpcd direnv pyenv kitty hyprland \
+           ttf-jetbrains-mono-nerd ttf-firacode-nerd noto-fonts-emoji \
+           hyprpolkitagent xdg-desktop-portal-hyprland wl-clipboard cliphist \
+           dunst fuzzel grim jq playerctl awww hypridle hyprlock steam python-gobject python-pillow python-cairo vulkan-radeon lib32-vulkan-radeon \
+           base-devel rust libdbusmenu-gtk3 gtk3 gtk-layer-shell --noconfirm
 
 # Prompt for a new password for ROOT
 passwd
@@ -85,6 +92,19 @@ if [ ! -f /usr/local/share/fonts/orbitron/Orbitron.ttf ]; then
     wget -q -O /usr/local/share/fonts/orbitron/Orbitron.ttf \
         'https://github.com/google/fonts/raw/main/ofl/orbitron/Orbitron%5Bwght%5D.ttf'
     fc-cache -f
+fi
+
+# eww is AUR-only. paru can't run as root, so build the package as the unprivileged user with makepkg
+# and install the result as root. The PKGBUILD pins the upstream commit (hence --skippgpcheck, which
+# only avoids importing the signing keys). Failure is not fatal: install it later with `paru -S eww`.
+if ! pacman -Q eww >/dev/null 2>&1; then
+    EWW_BUILD=/home/$SCRIPT_USER/.cache/aur-eww
+    su $SCRIPT_USER -c "mkdir -p /home/$SCRIPT_USER/.cache && rm -rf $EWW_BUILD && \
+        git clone https://aur.archlinux.org/eww.git $EWW_BUILD && \
+        cd $EWW_BUILD && makepkg --noconfirm --skippgpcheck" \
+        && pacman -U --noconfirm $EWW_BUILD/eww-[0-9]*.pkg.tar.zst \
+        || echo "WARNING: could not build eww from the AUR, install it later with: paru -S eww"
+    rm -rf $EWW_BUILD
 fi
 
 # Link dotfiles to locations where they are used for real so they will be synced with git repos

@@ -10,6 +10,7 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("wl-paste --type image --watch cliphist store")
     -- xdg-desktop-portal-hyprland is D-Bus activated, no exec needed
     hl.exec_cmd("dunst")
+    hl.exec_cmd("hypridle")   -- idle: screensaver after 5 min, screens off after 15 (hypr/hypridle.conf)
     hl.exec_cmd("awww-daemon")
     hl.exec_cmd("sleep 1 && awww img " .. wallpaper)
     -- Wallpapers: DP-2 (big) and DP-3 each get their own image.
