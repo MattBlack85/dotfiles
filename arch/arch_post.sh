@@ -34,7 +34,7 @@ pacman -Sy sudo wpa_supplicant ntp efibootmgr grub python \
            bind dhcpcd direnv pyenv alacritty hyprland \
            ttf-jetbrains-mono-nerd ttf-firacode-nerd noto-fonts-emoji \
            hyprpolkitagent xdg-desktop-portal-hyprland wl-clipboard cliphist \
-           dunst fuzzel grim jq playerctl awww hypridle hyprlock steam python-gobject python-pillow python-cairo vulkan-radeon lib32-vulkan-radeon \
+           dunst fuzzel grim slurp jq playerctl awww hypridle hyprlock steam python-gobject python-pillow python-cairo vulkan-radeon lib32-vulkan-radeon \
            base-devel rust libdbusmenu-gtk3 gtk3 gtk-layer-shell --noconfirm
 
 # Prompt for a new password for ROOT

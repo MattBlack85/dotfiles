@@ -93,6 +93,13 @@ bind("CTRL + K", hl.dsp.exec_cmd("~/.config/hypr/scripts/turn-off.sh"), "Session
 -- Help popup (SUPER+H is taken by "shrink master", so it lives on SHIFT+H)
 bind("SHIFT + H", hl.dsp.exec_cmd("~/.config/eww/scripts/toggle_keys.sh"), "Session::::This keybind list")
 
+-- Screenshots -> ~/Pictures/screenshots + clipboard (screen 1 = DP-3 left, screen 2 = DP-2 right)
+local shot = "~/.config/hypr/scripts/screenshot.sh "
+bind("Print",          hl.dsp.exec_cmd(shot .. "all"),    "Screenshots::PRINT::Both screens")
+bind("CTRL + Print",   hl.dsp.exec_cmd(shot .. "DP-3"),   "Screenshots::CTRL PRINT::Screen 1 (left)")
+bind("ALT + Print",    hl.dsp.exec_cmd(shot .. "DP-2"),   "Screenshots::ALT PRINT::Screen 2 (right)")
+bind("SHIFT + Print",  hl.dsp.exec_cmd(shot .. "region"), "Screenshots::SHIFT PRINT::Custom area")
+
 -- Audio on the function keys (the Unicomp Model M has no media keys), laid out like a media row:
 -- F7 prev | F8 next | F9 play/pause | F10 mute | F11 vol- | F12 vol+
 local hold = { repeating = true }
