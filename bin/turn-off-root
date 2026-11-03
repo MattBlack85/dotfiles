@@ -4,25 +4,42 @@
 #   sudo install -m 755 -o root -g root ~/dotfiles/bin/turn-off-root /usr/local/bin/turn-off-root
 # Run through hypr/scripts/turn-off.sh (pkexec shows the polkit password dialog).
 set -u
+set -o pipefail
 DEST=/home/matt/data/rsync-backup-main-disk
+STATUS=/run/turn-off.status   # "percent<TAB>message", polled by hypr/scripts/turn-off.sh
+
+status() { printf '%s\t%s\n' "$1" "$2" > "$STATUS.tmp" && chmod 644 "$STATUS.tmp" && mv -f "$STATUS.tmp" "$STATUS"; }
+
+# rsync --info=progress2 redraws with \r; turn each update into a status line
+progress() {
+    local label=$1 line pct=0
+    tr '\r' '\n' | while IFS= read -r line; do
+        [[ $line =~ ([0-9]+)% ]] && { pct=${BASH_REMATCH[1]}; status "$pct" "$label"; }
+    done
+}
 
 cleanup() {
     umount "$DEST/boot" 2>/dev/null
     umount "$DEST/root" 2>/dev/null
+    rm -f "$STATUS" "$STATUS.tmp"
 }
 trap cleanup EXIT
 
+status 0 "Mounting backup disks"
 mount /dev/nvme0n1p1 "$DEST/boot" || exit 1
 mount /dev/nvme0n1p2 "$DEST/root" || exit 1
 
-rsync -aAXH --delete /boot/ "$DEST/boot/" || exit 1
-rsync -aAXH --delete \
+status 0 "Backing up /boot"
+rsync -aAXH --delete --info=progress2 /boot/ "$DEST/boot/" | progress "Backing up /boot" || exit 1
+status 0 "Scanning the root disk"
+rsync -aAXH --delete --info=progress2 --no-inc-recursive \
     --exclude=/etc/fstab --exclude='/dev/*' --exclude='/proc/*' --exclude='/sys/*' \
     --exclude='/var/tmp/*' --exclude='/var/spool/*' --exclude='/tmp/*' --exclude='/run/*' \
     --exclude='/mnt/*' --exclude='/media/*' --exclude=/lost+found --exclude='/boot/*' \
     --exclude='/home/matt/data/*' --exclude='/home/matt/games/*' \
-    / "$DEST/root" || exit 1
+    / "$DEST/root" | progress "Backing up the root disk" || exit 1
 
+status 100 "Unmounting, powering off"
 cleanup
 trap - EXIT
 systemctl poweroff
