@@ -9,7 +9,7 @@ family = "FantasqueSansM Nerd Font Mono"
 style = "Bold"
 
 [window]
-opacity = 0.88
+opacity = 0.72
 padding = { x = 6, y = 4 }
 
 [cursor]

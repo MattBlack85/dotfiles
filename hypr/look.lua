@@ -53,7 +53,7 @@ hl.config({
     decoration = {
         rounding = 0,
         shadow   = { enabled = false },
-        blur     = { enabled = true, size = 3, passes = 1 },
+        blur     = { enabled = true, size = 8, passes = 3, noise = 0.03, brightness = 0.9, vibrancy = 0.4 },
     },
 
     animations = {

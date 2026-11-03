@@ -143,3 +143,4 @@ eval "$(atuin init zsh)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f ~/dotfiles/zsh/p10k-cyberpunk.zsh ]] || source ~/dotfiles/zsh/p10k-cyberpunk.zsh
