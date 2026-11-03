@@ -1,0 +1,28 @@
+#!/bin/bash
+# Root half of "turn-off": backup the main disk with rsync, then power off.
+# Install as root-owned (so a user-writable file is never run by pkexec):
+#   sudo install -m 755 -o root -g root ~/dotfiles/bin/turn-off-root /usr/local/bin/turn-off-root
+# Run through hypr/scripts/turn-off.sh (pkexec shows the polkit password dialog).
+set -u
+DEST=/home/matt/data/rsync-backup-main-disk
+
+cleanup() {
+    umount "$DEST/boot" 2>/dev/null
+    umount "$DEST/root" 2>/dev/null
+}
+trap cleanup EXIT
+
+mount /dev/nvme0n1p1 "$DEST/boot" || exit 1
+mount /dev/nvme0n1p2 "$DEST/root" || exit 1
+
+rsync -aAXH --delete /boot/ "$DEST/boot/" || exit 1
+rsync -aAXH --delete \
+    --exclude=/etc/fstab --exclude='/dev/*' --exclude='/proc/*' --exclude='/sys/*' \
+    --exclude='/var/tmp/*' --exclude='/var/spool/*' --exclude='/tmp/*' --exclude='/run/*' \
+    --exclude='/mnt/*' --exclude='/media/*' --exclude=/lost+found --exclude='/boot/*' \
+    --exclude='/home/matt/data/*' --exclude='/home/matt/games/*' \
+    / "$DEST/root" || exit 1
+
+cleanup
+trap - EXIT
+systemctl poweroff

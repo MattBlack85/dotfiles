@@ -57,7 +57,11 @@
               :onclick "eww open weather-input --arg monitor=${monitor}"
       (label :class "stat weather" :text " ${WEATHER}"))
     (label :class "stat date" :text " ${DATE}")
-    (label :class "stat time" :text "${TIME}")))
+    (label :class "stat time" :text "${TIME}")
+    (eventbox :cursor "pointer"
+              :tooltip "Backup and turn off (SUPER+CTRL+K)"
+              :onclick "~/.config/hypr/scripts/turn-off.sh"
+      (label :class "stat power" :text "⏻"))))
 
 ;; ----------- Bar Window -------------
 

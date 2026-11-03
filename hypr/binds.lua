@@ -72,6 +72,9 @@ bind("SHIFT + space", hl.dsp.exec_cmd("hyprctl switchxkblayout all next"), "Sess
 -- Lock the screen now (hyprlock, via hypridle's lock_cmd)
 bind("CTRL + L", hl.dsp.exec_cmd("loginctl lock-session"), "Session::::Lock screen")
 
+-- Backup the main disk (rsync) and power off; asks for the password through polkit
+bind("CTRL + K", hl.dsp.exec_cmd("~/.config/hypr/scripts/turn-off.sh"), "Session::::Backup and turn off")
+
 -- Help popup (SUPER+H is taken by "shrink master", so it lives on SHIFT+H)
 bind("SHIFT + H", hl.dsp.exec_cmd("~/.config/eww/scripts/toggle_keys.sh"), "Session::::This keybind list")
 

@@ -117,6 +117,7 @@ ln -s /home/$SCRIPT_USER/data/repos/dotfiles/fuzzel /home/$SCRIPT_USER/.config/f
 ln -s /home/$SCRIPT_USER/data/repos/dotfiles/eww/eww.yuck /home/$SCRIPT_USER/.config/eww/
 ln -s /home/$SCRIPT_USER/data/repos/dotfiles/eww/eww.scss /home/$SCRIPT_USER/.config/eww/
 ln -s /home/$SCRIPT_USER/data/repos/dotfiles/eww/scripts /home/$SCRIPT_USER/.config/eww/scripts
+install -m 755 -o root -g root /home/$SCRIPT_USER/data/repos/dotfiles/bin/turn-off-root /usr/local/bin/turn-off-root  # root-owned copy for pkexec (turn-off button)
 
 # folders, links and files have been manipulated all by root, change owner
 chown $SCRIPT_USER:$SCRIPT_USER /home/$SCRIPT_USER -R

@@ -98,6 +98,8 @@ $text:    #d6e4ff;
 .weather:hover { color: $cyan; }
 .kb { color: $magenta; text-shadow: 0 0 6px rgba($magenta, 0.7); }
 .kb:hover { color: $cyan; }
+.power { font-size: 18px; margin-left: 6px; padding-right: 4px; color: $magenta; text-shadow: 0 0 6px rgba($magenta, 0.7); }
+.power:hover { color: $yellow; }
 .gpu .meter progress {
   min-height: 6px;
   background-color: $yellow;
