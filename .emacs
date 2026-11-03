@@ -1,4 +1,4 @@
-;;; .emacs --- my Emacs Init File
+;;; .emacs --- my Emacs Init File  -*- lexical-binding: t; -*-
 
 ;;
 ;;    ___ _ __ ___   __ _  ___ ___
@@ -66,8 +66,8 @@
 ;;   (setq ellama-language "English"))
 
 ;;; Flake8
-;; (require 'flycheck)
-;; (global-flycheck-mode)
+(require 'flycheck)
+(global-flycheck-mode)
 
 ;; Magic auto pep8 on saving
 ;;  (require 'py-autopep8)
@@ -80,9 +80,16 @@
 
 ;;; Rust mode
 (use-package rustic)
+(setq lsp-rust-server 'rust-analyzer)
+(setq lsp-enable-file-watchers nil)
+(setq lsp-enable-completion-at-point t)
+(setq lsp-enable-imenu t)
+(setq lsp-rust-analyzer-cargo-watch-enable nil)
+
 (setq rustic-analyzer-command '("rust-analyzer"))
 (setq rustic-lsp-server 'rust-analyzer)
 (setq rustic-format-on-save nil)
+(setq rustic-lsp-format nil)
 
 (defun rustic-mode-auto-save-hook ()
   "Enable auto-saving in rustic-mode buffers."
