@@ -59,3 +59,11 @@ hl.window_rule({
     },
     no_focus = true,
 })
+
+-- Terminals open as tabs of one group (Alacritty has no tabs of its own).
+-- ALT+Tab / ALT+SHIFT+Tab switch tab (binds.lua); the group fills the workspace.
+hl.window_rule({
+    name  = "terminals-in-group",
+    match = { class = "^(Alacritty)$" },
+    group = "set",
+})

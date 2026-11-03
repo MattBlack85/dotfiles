@@ -29,6 +29,11 @@ git history (before the "Remove XMonad" commit) if ever needed; comments in `hyp
   owns N, which makes the two screens look linked. Used by `SUPER+N` and the eww workspace buttons.
 - `rules.lua`: floats, app→workspace placement (`silent`, like doShift: firefox 2, emacs 3, Alacritty 4,
   steam 5, slack 6, pavucontrol 8) and `slack-no-self-fullscreen` (Slack fullscreens itself and covers the bar).
+- `tabs.lua`: terminal tabs. Hyprland groups = tabs: `rules.lua` makes every Alacritty window start as a group and
+  the `window.open` handler in `tabs.lua` adds it to the group of an existing Alacritty window (`group:add`), so
+  terminals are tabs of one full-size window. `ALT+Tab` / `ALT+SHIFT+Tab` (binds.lua) switch tab, or cycle windows
+  when the focused one is not grouped. Tab bar colors are in `look.lua` (`group.groupbar`). Window-rule values are
+  not validated by `--verify-config`: test with real windows (`alacritty --title x &`, `hyprctl clients -j`).
 - `binds.lua`: xmonad default keys + myKeys. **Every bind has a description** `"Section::key label::text"`
   (key label optional) which the keybinds popup reads from `hyprctl binds -j`; binds without one are not listed.
   Notable: `SUPER+SHIFT+H` keybinds popup (`SUPER+H` is xmonad's "shrink master"), `SUPER+SHIFT+space`

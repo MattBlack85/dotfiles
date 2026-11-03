@@ -25,6 +25,30 @@ hl.config({
         mfact      = 0.5,
     },
 
+    -- Groups = tabs (terminals open grouped, see rules.lua; ALT+Tab switches, binds.lua)
+    group = {
+        auto_group = true,
+        col = {
+            border_active   = { colors = { "rgb(46d9ff)", "rgb(ff2a6d)" }, angle = 45 },
+            border_inactive = "rgb(1a1a2e)",
+        },
+        groupbar = {
+            enabled        = true,
+            font_family    = "JetBrainsMono Nerd Font",
+            font_size      = 12,
+            height         = 24,
+            gradients      = true,
+            render_titles  = true,
+            indicator_height = 3,
+            col = {
+                active   = "rgb(46d9ff)",   -- cyan
+                inactive = "rgb(1a1a2e)",   -- dark panel
+            },
+            text_color          = "rgb(0a0a12)",   -- on the cyan active tab
+            text_color_inactive = "rgb(d6e4ff)",
+        },
+    },
+
     decoration = {
         rounding = 0,
         shadow   = { enabled = false },

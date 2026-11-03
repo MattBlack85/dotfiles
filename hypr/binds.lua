@@ -34,6 +34,21 @@ bind("SHIFT + A", function()
     end
 end, "Windows::::Close ALL on workspace")
 
+-- Tabs: ALT+Tab goes through the tabs of the focused group (terminals), or through the
+-- windows of the workspace when the focused window is not in a group.
+local function tab(dir)
+    return function()
+        local w = hl.get_active_window()
+        if w and w.group then
+            hl.dispatch(dir > 0 and hl.dsp.group.next() or hl.dsp.group.prev())
+        else
+            hl.dispatch(hl.dsp.layout(dir > 0 and "cyclenext" or "cycleprev"))
+        end
+    end
+end
+hl.bind("ALT + Tab",         tab(1),  { description = "Windows::TAB::Next tab / window (ALT)" })
+hl.bind("ALT + SHIFT + Tab", tab(-1), { description = "Windows::::Previous tab / window (ALT)" })
+
 -- Master layout (xmonad Tall)
 bind("J",         hl.dsp.layout("cyclenext"),        "Layout::::Focus next window")
 bind("K",         hl.dsp.layout("cycleprev"),        "Layout::::Focus previous window")
