@@ -27,13 +27,14 @@ hl.config({
 
     -- Groups = tabs (terminals open grouped, see rules.lua; ALT+Tab switches, binds.lua)
     group = {
-        auto_group = true,
+        auto_group = false,   -- tabs.lua joins terminals itself (only in tabbed mode)
         col = {
             border_active   = { colors = { "rgb(46d9ff)", "rgb(ff2a6d)" }, angle = 45 },
             border_inactive = "rgb(1a1a2e)",
         },
         groupbar = {
             enabled        = true,
+            disable_when_only = true,   -- no tab bar for a lone terminal
             font_family    = "JetBrainsMono Nerd Font",
             font_size      = 12,
             height         = 24,

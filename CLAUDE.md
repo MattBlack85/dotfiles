@@ -29,11 +29,16 @@ git history (before the "Remove XMonad" commit) if ever needed; comments in `hyp
   owns N, which makes the two screens look linked. Used by `SUPER+N` and the eww workspace buttons.
 - `rules.lua`: floats, app→workspace placement (`silent`, like doShift: firefox 2, emacs 3, Alacritty 4,
   steam 5, slack 6, pavucontrol 8) and `slack-no-self-fullscreen` (Slack fullscreens itself and covers the bar).
-- `tabs.lua`: terminal tabs. Hyprland groups = tabs: `rules.lua` makes every Alacritty window start as a group and
-  the `window.open` handler in `tabs.lua` adds it to the group of an existing Alacritty window (`group:add`), so
-  terminals are tabs of one full-size window. `ALT+Tab` / `ALT+SHIFT+Tab` (binds.lua) switch tab, or cycle windows
+- `tabs.lua`: terminal tabs and the `SUPER+SPACE` cycle. Hyprland groups = tabs. Modes: tabbed -> master left ->
+  top -> right -> bottom -> center -> tabbed. Tabbed: all Alacritty windows are tabs of one full-size group and new
+  ones join it (a `window.open` handler, `group:add`). Other modes: `group:remove` splits the tabs into separate
+  tiles, laid out by `layoutmsg orientation<m>`, and new terminals tile. Every Alacritty window starts as a group of
+  its own (`rules.lua`, `group = "set"`), `group.auto_group` is **off** (it would add new windows to the focused
+  group in every mode) and a lone group shows no tab bar (`disable_when_only`). The mode is a Lua variable: it
+  resets to tabbed on config reload / restart. `ALT+Tab` / `ALT+SHIFT+Tab` (binds.lua) switch tab, or cycle windows
   when the focused one is not grouped. Tab bar colors are in `look.lua` (`group.groupbar`). Window-rule values are
-  not validated by `--verify-config`: test with real windows (`alacritty --title x &`, `hyprctl clients -j`).
+  not validated by `--verify-config`: test with real windows (`alacritty --title x &`, `hyprctl clients -j`) and
+  call binds' functions with `hyprctl dispatch 'require("tabs").cycle'`.
 - `binds.lua`: xmonad default keys + myKeys. **Every bind has a description** `"Section::key label::text"`
   (key label optional) which the keybinds popup reads from `hyprctl binds -j`; binds without one are not listed.
   Notable: `SUPER+SHIFT+H` keybinds popup (`SUPER+H` is xmonad's "shrink master"), `SUPER+SHIFT+space`

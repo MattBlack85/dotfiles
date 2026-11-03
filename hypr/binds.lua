@@ -57,7 +57,7 @@ bind("SHIFT + K", hl.dsp.layout("swapprev"),         "Layout::::Swap with previo
 bind("Return",    hl.dsp.layout("swapwithmaster"),   "Layout::ENTER::Swap with master")
 bind("H",         hl.dsp.layout("mfact -0.03"),      "Layout::::Shrink master")
 bind("L",         hl.dsp.layout("mfact +0.03"),      "Layout::::Expand master")
-bind("space",     hl.dsp.layout("orientationnext"),  "Layout::SPACE::Next layout orientation")
+bind("space",     require("tabs").cycle,             "Layout::SPACE::Cycle terminals: tabbed / left / top / right / bottom / center")
 
 -- Monitors (M-. / M-,)
 bind("period",         hl.dsp.focus({ monitor = "+1" }),        "Monitors::.::Focus next monitor")
