@@ -17,7 +17,7 @@ git history (before the "Remove XMonad" commit) if ever needed; comments in `hyp
 ## Hyprland side
 
 `hypr/hyprland.lua` is the entry point and `require()`s modules from the same directory:
-- `programs.lua`: terminal (kitty), editor (emacsclient), launcher (fuzzel). Returns a table.
+- `programs.lua`: terminal (alacritty), editor (emacsclient), launcher (fuzzel). Returns a table.
 - `monitors.lua`: DP-3 1920x1080 at 0x123 (left), DP-2 2560x1440 at 1920x0 (right, the big one).
   X11 names DisplayPort-1/2 are DP-2/DP-3 on Wayland.
 - `look.lua`: master layout (≈ xmonad Tall), gaps 8/16, border 3 with a cyan→magenta gradient on the
@@ -27,7 +27,7 @@ git history (before the "Remove XMonad" commit) if ever needed; comments in `hyp
 - `wsfocus.lua`: global `ws_here(n)` = xmonad-style switching. Workspace N is shown on the monitor you are
   on, swapping with the other screen if it shows N. Plain `focus({workspace=N})` jumps to the monitor that
   owns N, which makes the two screens look linked. Used by `SUPER+N` and the eww workspace buttons.
-- `rules.lua`: floats, app→workspace placement (`silent`, like doShift: firefox 2, emacs 3, kitty 4,
+- `rules.lua`: floats, app→workspace placement (`silent`, like doShift: firefox 2, emacs 3, Alacritty 4,
   steam 5, slack 6, pavucontrol 8) and `slack-no-self-fullscreen` (Slack fullscreens itself and covers the bar).
 - `binds.lua`: xmonad default keys + myKeys. **Every bind has a description** `"Section::key label::text"`
   (key label optional) which the keybinds popup reads from `hyprctl binds -j`; binds without one are not listed.
@@ -45,7 +45,7 @@ git history (before the "Remove XMonad" commit) if ever needed; comments in `hyp
   Three floating segments: workspaces (+ `HOSTNAME//` tag), CPU/GPU/memory with icons and meters, and
   keyboard flag / volume / weather / date / time.
 - `eww.scss`: cyberpunk palette `#0a0a12` bg, `#46d9ff` cyan, `#ff2a6d` magenta, `#f9f002` yellow, `#5a6078` dim,
-  `#d6e4ff` text. The same palette is in `hypr/look.lua`, `kitty/kitty.conf` and `fuzzel/fuzzel.ini`.
+  `#d6e4ff` text. The same palette is in `hypr/look.lua`, `alacritty/alacritty.toml` and `fuzzel/fuzzel.ini`.
 - `eww/scripts/`: `workspaces_json.sh` (workspaces 1-8 only; Hyprland creates a hidden extra one on its own),
   `workspaces.sh` (old text version), `cpu.sh`, `gpu.sh` (AMD sysfs), `mem.sh`, `get_volume.sh`,
   `kb_layout.sh` (flag, click or shortcut switches), `weather.sh` + `set_location.sh` (location stored in
@@ -67,8 +67,9 @@ git history (before the "Remove XMonad" commit) if ever needed; comments in `hyp
 
 - Symlinked to the repo: `hypr`, `fuzzel`, `eww/eww.yuck`, `eww/eww.scss`, `eww/scripts`,
   plus `~/.zshrc` and `~/.emacs`.
-- **`~/.config/kitty` is NOT linked**: it is a real directory with an old config (own colors, FantasqueSansM font),
-  so the repo's `kitty/kitty.conf` (cyberpunk colors) is not in use. TODO: back it up and symlink.
+- `~/.config/alacritty` links to the repo's `alacritty/` (the default terminal since 2026-11-03; no tabs or splits,
+  the Hyprland layout does that). kitty is still installed with an unlinked old config in `~/.config/kitty`; the
+  repo's `kitty/kitty.conf` is unused.
 - `waybar`, `wallust`, `rofi`, `swaync` and `ags` in `~/.config` are leftover configs of the old JaKooLit
   Hyprland-Dots install (backup in `~/.config/backup-jakoolit-20261102/`), all unused; their packages are
   uninstalled.
@@ -93,7 +94,7 @@ Hyprland reads `~/.config/hypr/hyprland.lua`. hyprlang (`.conf`, `source=`, `bin
 ## Next steps
 1. Optional disk cleanup of XMonad leftovers outside the repo: `~/.xmonad/` (build cache), `~/.Xauthority`,
    `~/.local/bin/kernel` (an xmobar helper), `~/.config/{waybar,wallust,rofi,swaync,ags}`.
-2. Link `~/.config/kitty` to the repo (ask first, back up the old directory) and add it to `arch_post.sh`.
+2. Optional: uninstall kitty and delete `kitty/` and `~/.config/kitty` once alacritty has proven itself.
 3. Idle + lock: `hypr/hypridle.conf` (started from `autostart.lua`): after 5 min `hypr/scripts/screensaver.sh`
    starts `hypr/scripts/neon-saver.py` on every monitor (the monitor's wallpaper from `~/.local/share/wallpapers/`
    animated by a GLES fragment shader: drift, neon flicker/glow, scanlines, glitch; a gtk-layer-shell overlay),

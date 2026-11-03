@@ -1,0 +1,52 @@
+# Cyberpunk palette -- keep in sync with hypr/look.lua, eww/eww.scss, fuzzel/fuzzel.ini
+# Alacritty has no tabs or splits: use the Hyprland layout (SHIFT+Return opens a new terminal).
+
+[font]
+size = 16
+
+[font.normal]
+family = "FantasqueSansM Nerd Font Mono"
+style = "Bold"
+
+[window]
+opacity = 0.88
+padding = { x = 6, y = 4 }
+
+[cursor]
+blink_interval = 500
+
+[cursor.style]
+shape = "Beam"
+blinking = "On"
+
+[colors.primary]
+foreground = "#d6e4ff"
+background = "#0a0a12"
+
+[colors.cursor]
+text = "#0a0a12"
+cursor = "#ff2a6d"
+
+[colors.selection]
+text = "#0a0a12"
+background = "#46d9ff"
+
+[colors.normal]
+black   = "#0a0a12"
+red     = "#ff2a6d"
+green   = "#05ffa1"
+yellow  = "#f9f002"
+blue    = "#46d9ff"
+magenta = "#b967ff"
+cyan    = "#01cdfe"
+white   = "#d6e4ff"
+
+[colors.bright]
+black   = "#5a6078"
+red     = "#ff5c8a"
+green   = "#3dffb8"
+yellow  = "#fff95c"
+blue    = "#7fe6ff"
+magenta = "#d09bff"
+cyan    = "#5fe0ff"
+white   = "#ffffff"

@@ -31,7 +31,7 @@ pacman -Sy sudo wpa_supplicant ntp efibootmgr grub python \
            python-pip emacs firefox net-tools htop sbcl git chromium \
            networkmanager zsh pipewire pipewire-pulse wireplumber gzip unzip openssh \
            wget curl docker alsa-utils libxss make vlc linux-headers acpid \
-           bind dhcpcd direnv pyenv kitty hyprland \
+           bind dhcpcd direnv pyenv alacritty hyprland \
            ttf-jetbrains-mono-nerd ttf-firacode-nerd noto-fonts-emoji \
            hyprpolkitagent xdg-desktop-portal-hyprland wl-clipboard cliphist \
            dunst fuzzel grim jq playerctl awww hypridle hyprlock steam python-gobject python-pillow python-cairo vulkan-radeon lib32-vulkan-radeon \
@@ -114,6 +114,7 @@ ln -s /home/$SCRIPT_USER/data/repos/dotfiles/zsh/.zshrc /home/$SCRIPT_USER/.zshr
 mkdir -p /home/$SCRIPT_USER/.config/eww
 ln -s /home/$SCRIPT_USER/data/repos/dotfiles/hypr /home/$SCRIPT_USER/.config/hypr
 ln -s /home/$SCRIPT_USER/data/repos/dotfiles/fuzzel /home/$SCRIPT_USER/.config/fuzzel
+ln -s /home/$SCRIPT_USER/data/repos/dotfiles/alacritty /home/$SCRIPT_USER/.config/alacritty
 ln -s /home/$SCRIPT_USER/data/repos/dotfiles/eww/eww.yuck /home/$SCRIPT_USER/.config/eww/
 ln -s /home/$SCRIPT_USER/data/repos/dotfiles/eww/eww.scss /home/$SCRIPT_USER/.config/eww/
 ln -s /home/$SCRIPT_USER/data/repos/dotfiles/eww/scripts /home/$SCRIPT_USER/.config/eww/scripts

@@ -18,7 +18,7 @@ hl.window_rule({
 local placements = {
     { class = "^(firefox)$",                       ws = "2" }, -- web
     { class = "(?i)^(emacs)$",                     ws = "3" }, -- emacs
-    { class = "^(kitty)$",                         ws = "4" }, -- terms
+    { class = "^(Alacritty)$",                     ws = "4" }, -- terms
     { class = "(?i)^(slack)$",                     ws = "6" }, -- chat
     { class = "^(steam)$",                         ws = "5" }, -- gaming
     { class = "(?i)^(org\\.pulseaudio\\.)?pavucontrol$", ws = "8" }, -- sound
